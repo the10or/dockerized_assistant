@@ -14,7 +14,7 @@ except FileNotFoundError:
 try:
     with open(file_notes, "rb") as fh:
         unpacked = pickle.loads(fh.read())
-        book = unpacked
+        notes = unpacked
 except FileNotFoundError:
     notes = 'class Notes here'  # TODO: add class Notes
 
