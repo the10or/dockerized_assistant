@@ -3,16 +3,86 @@ from datetime import datetime
 
 
 class Field:
-    pass
+    def __init__(self, value):
+        self._value = value
 
+    def __str__(self):
+        return str(self._value)
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
 
 class Name(Field):
     pass
 
 
 class Phone(Field):
-    pass
+    def __init__(self, value):
+        super().__init__(value)
+        self.validate_phone(value)
 
+    def validate_phone(self, phone):
+        if not (len(phone) == 10 and phone.isdigit()):
+            raise ValueError("Invalid phone number format")
+
+class Birthday(Field):
+    def __init__(self, value):
+        super().__init__(value)
+        self.validate_birthday(value)
+
+    def validate_birthday(self, birthday):
+        try:
+            datetime.strptime(birthday, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("Invalid birthday format (should be 'YYYY-MM-DD')")
 
 class Record:
-    pass
+    def __init__(self, name, phone, birthday=None):
+        self.name = Name(name)
+        self.phones = [Phone(phone)]
+        if birthday:
+            self.birthday = Birthday(birthday)
+        else:
+            self.birthday = None
+
+    def add_phone(self, phone):
+        self.phones.append(Phone(phone))
+
+    def remove_phone(self, phone):
+        initial_length = len(self.phones)
+        self.phones = [p for p in self.phones if p.value != phone]
+        if len(self.phones) == initial_length:
+            raise ValueError("Phone number not found")
+    
+
+    def edit_phone(self, old_phone, new_phone):
+        for phone_obj in self.phones:
+            if phone_obj.value == old_phone:
+                new_phone_instance = Phone(new_phone)
+                if not new_phone_instance.validate_phone(new_phone_instance.value):
+                    raise ValueError("Invalid phone number format")
+                phone_obj.value = new_phone
+                return
+        raise ValueError("Phone number not found")
+    
+    def find_phone(self, phone):
+        for phone_obj in self.phones:
+            if phone_obj.value == phone:
+                return phone_obj
+    
+    def days_to_birthday(self):
+        if self.birthday:
+            today = datetime.now()
+            next_birthday = datetime(today.year, self.birthday.value.month, self.birthday.value.day)
+            if today > next_birthday:
+                next_birthday = datetime(today.year + 1, self.birthday.value.month, self.birthday.value.day)
+            days_left = (next_birthday - today).days
+            return days_left
+
+    def __str__(self):
+        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
