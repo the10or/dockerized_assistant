@@ -5,18 +5,16 @@ from user_actions_handler import book
 import pickle
 from file_config import file
 
-
-
-BOT_COMMANDS = 'hello\n' \
-               'close\n' \
-               'exit\n'
+BOT_COMMANDS = "hello\n" "close\n" "exit\n"
 
 
 def main():
-    print(f'use those commands:\n{BOT_COMMANDS}\n') # those - these
+    print(
+        f"use those commands:\n{BOT_COMMANDS}\n"
+    )  # Suggestion: those - these(the10or)
     while globals.is_listening:
-        user_line = input(f'listening...\n')
-        if user_line is not None: # better "if user line:"
+        user_line = input(f"listening...\n")
+        if user_line is not None:  # Suggestion: better simply "if user_line:"(the10or)
             try:
                 command, data = parser(user_line)
                 handler = get_handler(command)
@@ -27,8 +25,10 @@ def main():
 
                 continue
             except AttributeError:
-                print(f'Please, type right command: {COMMANDS_RGX}') # right - correct
+                print(
+                    f"Please, type right command: {COMMANDS_RGX}"
+                )  # Suggestion: right - correct(the10or)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
