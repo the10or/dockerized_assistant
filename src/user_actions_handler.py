@@ -1,6 +1,6 @@
 from error_handler import input_error
-from personal_assistant.src.address_book import contact_book
-from personal_assistant.src.address_book.contact_book import AddressBook, Record
+from address_book import contact_book
+from address_book.contact_book import AddressBook, Record
 import globals
 from file_config import file
 import pickle
@@ -124,9 +124,9 @@ OPERATORS = {
     'close': handler_bye,
     'exit': handler_bye,
     'show all': show_all_contacts,
-    'add': add_contact,
+    'add contact': add_contact,
     'change phone': change_phone,
     'get phone': get_phone,
     'get birthday': get_birthday,
-    'search': search_contacts,
+    'search contact': search_contacts,
 }

@@ -1,7 +1,7 @@
 from collections import UserDict
 from datetime import datetime,timedelta
 import pickle
-from src.record import Record
+from record import Record
 
 
 class AddressBook(UserDict):

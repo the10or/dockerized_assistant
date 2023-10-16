@@ -1,16 +1,13 @@
 import re
 
-COMMANDS_RGX = 'hello|close|exit|good bye|' \
+COMMANDS_RGX = 'hello|close|exit|' \
                'add contact|' \
                'change phone|' \
-               'find contact by name|' \
                'show all|' \
-               'add extra phone|' \
-               'find phone|' \
-               'delete contact|' \
-               'remove phone|' \
-               'find birthday|' \
-               'find by key'
+               'get phone|' \
+               'get birthday|' \
+               'search contact' 
+               
 
 
 def parser(line):
