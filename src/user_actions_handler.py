@@ -65,9 +65,9 @@ def get_handler(operator):
 
 @input_error
 def handler_show_all_contacts(*args):
-    if not contact_book.data:
+    if not book.data:
         return "No contacts found"
-    contact_list = "\n".join([str(record) for record in contact_book.data.values()])
+    contact_list = "\n".join([str(record) for record in book.data.values()])
     return contact_list
 
 # Function to add a new contact
@@ -79,7 +79,7 @@ def handler_add_contact(*args):
         return "Give me name, phone, and birthday please"
     name, phone, birthday = args
     record = Record(name, phone, birthday)
-    contact_book.add_record(record)
+    book.add_record(record)
     
     return f"Contact {name} added with phone number {phone} and birthday {birthday}"
 
@@ -88,7 +88,7 @@ def handler_add_contact(*args):
 def handler_change_phone(*args):
     command = " ".join(args)
     _, name, new_phone = command.split()
-    record = contact_book.find(name)
+    record = book.find(name)
     if record:
         record.edit_phone(record.phones[0].value, new_phone)
         
@@ -101,7 +101,7 @@ def handler_change_phone(*args):
 def handler_get_phone(*args):
     command = " ".join(args)
     _, name = command.split()
-    record = contact_book.find(name)
+    record = book.find(name)
     if record:
         return f"Phone number for {name}: {record.phones[0].value}"
     else:
@@ -112,7 +112,7 @@ def handler_get_phone(*args):
 def handler_get_birthday(*args):
     command = " ".join(args)
     _, name = command.split()
-    record = contact_book.find(name)
+    record = book.find(name)
     if record and record.birthday:
         return f"Birthday of {name}: {record.birthday.value}"
     elif record and not record.birthday:
@@ -123,7 +123,7 @@ def handler_get_birthday(*args):
 # Function to search for contacts
 def handler_search_contacts(query):
     results = []
-    for record in contact_book.data.values():
+    for record in book.data.values():
         if query in record.name.value:
             results.append(record)
         for phone in record.phones:
