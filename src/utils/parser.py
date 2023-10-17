@@ -1,18 +1,13 @@
 import re
-
-COMMANDS_RGX = 'hello|close|exit|' \
-               'add contact|' \
-               'change phone|' \
-               'show all|' \
-               'get phone|' \
-               'get birthday|' \
-               'search contact' 
-               
+import difflib
+from .constants import BOT_COMMANDS
 
 
 def parser(line):
-    data_array = list(filter(None, re.split(COMMANDS_RGX, line)))
-    command = re.search(COMMANDS_RGX, line)
-
+    data_array = list(filter(None, re.split('|'.join(BOT_COMMANDS), line)))
+    command = difflib.get_close_matches(line, BOT_COMMANDS, n=1, cutoff=0.1)
+    if not len(command):
+        raise AttributeError
     data = data_array[0].strip().split(' ') if len(data_array) > 0 else None
-    return command.group(), data
+
+    return command[0], data

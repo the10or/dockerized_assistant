@@ -1,12 +1,17 @@
+from pathlib import Path
+
 from error_handler import input_error
 from address_book import contact_book
-from address_book.contact_book import AddressBook, Record
+from address_book.contact_book import AddressBook
+from record import Record
 import globals
-from file_config import file
+from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
+from file_config import file_contact_book, file_notes
 import pickle
+from sort_file import sort
 
 try:
-    with open(file, "rb") as fh:
+    with open(file_contact_book, "rb") as fh:
         unpacked = pickle.loads(fh.read())
         book = unpacked
 except FileNotFoundError:
@@ -14,16 +19,46 @@ except FileNotFoundError:
 
  
 
-@input_error
+
 def handler_greetings(*args):
-    return 'How can I help you?'
+    return "How can I help you?"
 
 
 def handler_bye(*args):
     globals.is_listening = False
-    return 'Good bye!'
+    return "Good bye!"
 
 
+@input_error
+def handler_sort(dir_path):
+    """
+    Handler function for sorting a directory.
+
+    Args:
+        dir_path (str): The path of the directory to be sorted.
+
+    Returns:
+        str: A message indicating the status of the sorting operation.
+    """
+    # Prompt the user for confirmation
+    choice = input(WARNING_MESSAGE)
+    if choice.lower() == "n":
+        return ABORTING_OPERATION_MESSAGE
+
+    # Print progress message
+    print(SORTING_PROGRESS_MESSAGE + dir_path[0])
+
+    # Sort the directory
+    sort.main(Path(dir_path[0]))
+
+    return "Done!"
+
+
+def handler_add_contact(data):
+    pass
+
+
+@input_error
 def get_handler(operator):
     return OPERATORS[operator]
 
@@ -45,7 +80,7 @@ def handler_add_contact(*args):
     name, phone, birthday = args
     record = Record(name, phone, birthday)
     contact_book.add_record(record)
-    save_address_book()
+    
     return f"Contact {name} added with phone number {phone} and birthday {birthday}"
 
 # Function to change a contact's phone number
@@ -56,7 +91,7 @@ def handler_change_phone(*args):
     record = contact_book.find(name)
     if record:
         record.edit_phone(record.phones[0].value, new_phone)
-        save_address_book()
+        
         return f"Phone number for {name} updated to {new_phone}"
     else:
         return "Contact not found"

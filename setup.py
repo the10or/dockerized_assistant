@@ -8,5 +8,5 @@ setup(name='personal assistant',
       author_email='baskina.development@gmail.com',
       license='MIT',
       packages=find_namespace_packages(),
-      entry_points={'console_scripts': ['start-bot = stc.main:main']},
+      entry_points={'console_scripts': ['start-bot = src.main:main']},
       )

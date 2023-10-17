@@ -1,3 +1,6 @@
+from utils.constants import BOT_COMMANDS
+
+
 class EmptyPhoneNumberError(Exception):
     pass
 
@@ -7,15 +10,12 @@ def input_error(handler):
         try:
             return handler(data)
         except EmptyPhoneNumberError:
-            return f'Phone is required'
+            return f"Phone is required"
         except KeyError:
-            return "Enter user name"
-        except ValueError:
-            return "Give me name and phone please"
-        except IndexError:
-            return "Invalid command format"
+            return f'Please, type one of the commands: {BOT_COMMANDS}'
+        except FileNotFoundError:
+            return f'Directory "{data[0]}" does not exist, please, check your path.'
         except Exception as error:
-            return f'Something happens: {error}'
-        
+            return f"Something happens: {error}"
 
     return error_handler
