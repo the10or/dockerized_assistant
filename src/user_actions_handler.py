@@ -3,16 +3,23 @@ from pathlib import Path
 from error_handler import input_error
 from address_book.contact_book import AddressBook
 import globals
-from file_config import file
+from file_config import file_contact_book, file_notes
 import pickle
 from sort_file import sort
 
 try:
-    with open(file, "rb") as fh:
+    with open(file_contact_book, "rb") as fh:
         unpacked = pickle.loads(fh.read())
         book = unpacked
 except FileNotFoundError:
     book = AddressBook()
+
+try:
+    with open(file_notes, "rb") as fh:
+        unpacked = pickle.loads(fh.read())
+        notes = unpacked
+except FileNotFoundError:
+    notes = 'class Notes here'  # TODO: add class Notes
 
 
 @input_error
@@ -54,13 +61,21 @@ def handler_sort(dir_path):
     return "Done!"
 
 
+def handler_add_contact(data):
+    pass
+
+
+@input_error
 def get_handler(operator):
     return OPERATORS[operator]
 
 
 OPERATORS = {
     "hello": handler_greetings,
+    "hi": handler_greetings,
     "close": handler_bye,
     "exit": handler_bye,
+    "good bye": handler_bye,
     "sort dir": handler_sort,
+    "add contact": handler_add_contact
 }
