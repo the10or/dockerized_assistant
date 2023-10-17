@@ -8,7 +8,14 @@ def input_error(handler):
             return handler(data)
         except EmptyPhoneNumberError:
             return f'Phone is required'
+        except KeyError:
+            return "Enter user name"
+        except ValueError:
+            return "Give me name and phone please"
+        except IndexError:
+            return "Invalid command format"
         except Exception as error:
             return f'Something happens: {error}'
+        
 
     return error_handler

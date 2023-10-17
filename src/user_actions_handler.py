@@ -13,20 +13,6 @@ except FileNotFoundError:
     book = AddressBook()
 
  
-def input_error(func):
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except KeyError:
-            return "Enter user name"
-        except ValueError:
-            return "Give me name and phone please"
-        except IndexError:
-            return "Invalid command format"
-
-    return wrapper
-   
-
 
 @input_error
 def handler_greetings(*args):
@@ -41,13 +27,9 @@ def handler_bye(*args):
 def get_handler(operator):
     return OPERATORS[operator]
 
-def save_address_book():
-    with open(file, "wb") as fh:
-        pickle.dump(contact_book, fh)
 
-# Function to display all contacts
 @input_error
-def show_all_contacts(*args):
+def handler_show_all_contacts(*args):
     if not contact_book.data:
         return "No contacts found"
     contact_list = "\n".join([str(record) for record in contact_book.data.values()])
@@ -55,7 +37,7 @@ def show_all_contacts(*args):
 
 # Function to add a new contact
 @input_error
-def add_contact(*args):
+def handler_add_contact(*args):
     command = " ".join(args)
     _, *args = command.split(maxsplit=3)
     if len(args) < 3:
@@ -68,7 +50,7 @@ def add_contact(*args):
 
 # Function to change a contact's phone number
 @input_error
-def change_phone(*args):
+def handler_change_phone(*args):
     command = " ".join(args)
     _, name, new_phone = command.split()
     record = contact_book.find(name)
@@ -81,7 +63,7 @@ def change_phone(*args):
 
 # Function to get a contact's phone number
 @input_error
-def get_phone(*args):
+def handler_get_phone(*args):
     command = " ".join(args)
     _, name = command.split()
     record = contact_book.find(name)
@@ -92,7 +74,7 @@ def get_phone(*args):
 
 # Function to get a contact's birthday
 @input_error
-def get_birthday(*args):
+def handler_get_birthday(*args):
     command = " ".join(args)
     _, name = command.split()
     record = contact_book.find(name)
@@ -104,7 +86,7 @@ def get_birthday(*args):
         return "Contact not found"
 
 # Function to search for contacts
-def search_contacts(query):
+def handler_search_contacts(query):
     results = []
     for record in contact_book.data.values():
         if query in record.name.value:
@@ -123,10 +105,10 @@ OPERATORS = {
     'hello': handler_greetings,
     'close': handler_bye,
     'exit': handler_bye,
-    'show all': show_all_contacts,
-    'add contact': add_contact,
-    'change phone': change_phone,
-    'get phone': get_phone,
-    'get birthday': get_birthday,
-    'search contact': search_contacts,
+    'show all': handler_show_all_contacts,
+    'add contact': handler_add_contact,
+    'change phone': handler_change_phone,
+    'get phone': handler_get_phone,
+    'get birthday': handler_get_birthday,
+    'search contact': handler_search_contacts,
 }

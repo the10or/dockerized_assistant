@@ -23,18 +23,7 @@ class AddressBook(UserDict):
         for i in range(0, len(records), N):
             yield records[i:i + N]
 
-    def save_to_file(self, file_path):
-        with open(file_path, 'wb') as file:
-            pickle.dump(self.data, file)
-
     
-    def load_from_file(self, file_path):
-        try:
-            with open(file_path, 'rb') as file:
-                self.data = pickle.load(file)
-        except FileNotFoundError:
-            pass
-
     def search(self, query):
         results = []
         for record in self.data.values():
