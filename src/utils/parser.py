@@ -10,12 +10,13 @@ COMMANDS_RGX = 'hello|close|exit|good bye|' \
                'delete contact|' \
                'remove phone|' \
                'find birthday|' \
-               'find by key'
+               'find by key|' \
+               'sort dir'
 
 
 def parser(line):
     data_array = list(filter(None, re.split(COMMANDS_RGX, line)))
     command = re.search(COMMANDS_RGX, line)
-
     data = data_array[0].strip().split(' ') if len(data_array) > 0 else None
+
     return command.group(), data
