@@ -5,16 +5,16 @@ from user_actions_handler import book, notes
 import pickle
 from file_config import file_contact_book, file_notes
 
-BOT_COMMANDS = 'hello\n' \
-               'close\n' \
-               'exit\n'
+BOT_COMMANDS = "hello\n" "close\n" "exit\n"
 
 
 def main():
-    print(f'use those commands:\n{BOT_COMMANDS}\n')
+    print(
+        f"use these commands:\n{BOT_COMMANDS}\n"
+    )
     while globals.is_listening:
-        user_line = input(f'listening...\n')
-        if user_line is not None:
+        user_line = input(f"listening...\n")
+        if user_line:
             try:
                 command, data = parser(user_line)
                 handler = get_handler(command)
@@ -29,5 +29,5 @@ def main():
                 print(f'Please, type one of the commands: {COMMANDS}')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
