@@ -1,11 +1,9 @@
-from user_actions_handler import get_handler
+from user_actions_handler import get_handler, book, notes
+from utils.constants import BOT_COMMANDS
 import globals
-from utils.parser import parser, COMMANDS
-from user_actions_handler import book, notes
+from utils.parser import parser
 import pickle
 from file_config import file_contact_book, file_notes
-
-BOT_COMMANDS = "hello\n" "close\n" "exit\n"
 
 
 def main():
@@ -26,7 +24,11 @@ def main():
                     fh.write(pickle.dumps(notes))
                 continue
             except AttributeError:
-                print(f'Please, type one of the commands: {COMMANDS}')
+                print(f'Please, type one of the commands: {BOT_COMMANDS}')
+            except TypeError:
+                print(f'Please, type one of the commands: {BOT_COMMANDS}')
+            except Exception as error:
+                print(f"Something wrong happens: {error}")
 
 
 if __name__ == "__main__":

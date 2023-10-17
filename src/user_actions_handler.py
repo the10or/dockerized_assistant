@@ -65,6 +65,7 @@ def handler_add_contact(data):
     pass
 
 
+@input_error
 def get_handler(operator):
     return OPERATORS[operator]
 
