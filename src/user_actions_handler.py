@@ -6,6 +6,7 @@ import globals
 from file_config import file_contact_book, file_notes
 import pickle
 from sort_file import sort
+from notes import note_book
 
 try:
     with open(file_contact_book, "rb") as fh:
@@ -60,6 +61,25 @@ def handler_sort(dir_path):
 
     return "Done!"
 
+    
+@input_error
+def add_note_handler(*args):
+     tags = []
+     for i in args:
+         if '#' in i:
+             tags.append(i)
+             args.remove(i)
+     text = ''
+
+     for i in args:
+         text + i
+
+
+     n = note_book.Note(text, tags)
+     book = note_book.NoteBook()
+     return book.add_record(n)
+
+
 
 def handler_add_contact(data):
     pass
@@ -77,5 +97,6 @@ OPERATORS = {
     "exit": handler_bye,
     "good bye": handler_bye,
     "sort dir": handler_sort,
-    "add contact": handler_add_contact
+    "add contact": handler_add_contact,
+    'add note' : add_note_handler
 }
