@@ -1,12 +1,12 @@
 from pathlib import Path
 
-from error_handler import input_error
-from address_book.contact_book import AddressBook
-import globals
-from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
-from file_config import file_contact_book, file_notes
+from .error_handler import input_error
+from .address_book.contact_book import AddressBook
+from . import globals
+from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
+from .file_config import file_contact_book, file_notes
 import pickle
-from sort_file import sort
+from .sort_file import sort
 
 try:
     with open(file_contact_book, "rb") as fh:
