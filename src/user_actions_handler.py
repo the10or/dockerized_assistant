@@ -64,6 +64,7 @@ def handler_sort(dir_path):
     
 @input_error
 def add_note_handler(*args):
+     print(args)
      tags = []
      for i in args:
          if '#' in i:
