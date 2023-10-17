@@ -12,7 +12,7 @@ def input_error(handler):
         except EmptyPhoneNumberError:
             return f"Phone is required"
         except KeyError:
-            return f' here 1 Please, type one of the commands: {BOT_COMMANDS}'
+            return f'Please, type one of the commands: {BOT_COMMANDS}'
         except FileNotFoundError:
             return f'Directory "{data[0]}" does not exist, please, check your path.'
         except Exception as error:
