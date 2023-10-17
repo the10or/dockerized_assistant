@@ -68,12 +68,14 @@ def add_note_handler(*args):
      for i in args:
          if '#' in i:
              tags.append(i)
-             args.remove(i)
+             
+
+    
      text = ''
 
      for i in args:
-         text + i
-
+         if '#' not in i:
+             text += i
 
      n = note_book.Note(text, tags)
      book = note_book.NoteBook()
