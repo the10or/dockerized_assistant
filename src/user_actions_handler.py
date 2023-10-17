@@ -62,7 +62,7 @@ def handler_sort(dir_path):
     return "Done!"
 
     
-@input_error
+
 def add_note_handler(*args):
      tags = []
      for i in args:
