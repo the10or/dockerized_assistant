@@ -79,7 +79,7 @@ def add_note_handler(*args):
 
      n = note_book.Note(text, tags)
      book = note_book.NoteBook()
-     return book.add_record(n)
+     return note_book.NoteBook(n)
 
 
 
