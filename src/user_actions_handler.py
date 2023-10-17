@@ -5,6 +5,7 @@ from address_book import contact_book
 from address_book.contact_book import AddressBook
 from record import Record
 import globals
+from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
 from file_config import file_contact_book, file_notes
 import pickle
 from sort_file import sort
@@ -60,12 +61,12 @@ def handler_sort(dir_path):
         str: A message indicating the status of the sorting operation.
     """
     # Prompt the user for confirmation
-    choice = input(globals.WARNING_MESSAGE)
+    choice = input(WARNING_MESSAGE)
     if choice.lower() == "n":
-        return globals.ABORTING_OPERATION_MESSAGE
+        return ABORTING_OPERATION_MESSAGE
 
     # Print progress message
-    print(globals.SORTING_PROGRESS_MESSAGE + dir_path[0])
+    print(SORTING_PROGRESS_MESSAGE + dir_path[0])
 
     # Sort the directory
     sort.main(Path(dir_path[0]))
