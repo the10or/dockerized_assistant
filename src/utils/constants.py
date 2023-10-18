@@ -18,9 +18,9 @@ GREETING_MESSAGE = "How can I help you?"
 
 BYE_MESSAGE = "Good bye!"
 
-BOT_COMMANDS = ['hi', 'hello', 'close', 'exit', 'good bye', 'add contact', 'find birthday', 'find contact',
-                'remove phone',
-                'remove address', 'remove birthday', 'remove email', 'edit phone', 'edit address', 'edit birthday',
-                'edit email', 'delete contact', 'add note', 'find note', 'edit note title', 'edit note text',
-                'add note tag', 'delete note', 'sort note', 'sort dir', "help"]
+# functional commands have only two words (according to current parser logic)
+BOT_COMMANDS = ['hi', 'hello', 'close', 'exit', 'good bye', 'add contact', 'find contact',
+                'delete contact', 'add note', 'find note', 'edit note title', 'edit notetext',
+                'add notetag', 'delete note', 'sort note', 'sort dir', "help", "change birthday",
+                "search contacts", "show all", "add phone"]
 
