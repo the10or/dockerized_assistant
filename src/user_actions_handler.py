@@ -128,7 +128,7 @@ def handler_add_tag(data):
     print(f'Tag has been added successfully:')
     for i in globals.note.data.values():
         if type(i) == list:
-            print('here')
+            
             for j in i:
                 print(str(j))
         print(str(i))
@@ -141,7 +141,7 @@ def handler_edit_title(data):
     print(f'Tag has been added successfully:')
     for i in globals.note.data.values():
         if type(i) == list:
-            print('here')
+            
             for j in i:
                 print(str(j))
         print(str(i))
