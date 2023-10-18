@@ -13,6 +13,9 @@ class EmptyNameError(Exception):
 class EmptyNamePhoneError(Exception):
     pass
 
+class ContactNotFoundError(Exception):
+    pass
+
 
 def input_error(handler):
     def error_handler(data):
@@ -26,6 +29,8 @@ def input_error(handler):
             return f"Enter contact name"
         except EmptyNamePhoneError:
             return f"Enter contact name and phone number"
+        except ContactNotFoundError:
+            return f"Contact does not exists"
         except KeyError:
             return f'Please, type one of the commands: {BOT_COMMANDS}'
         except FileNotFoundError:

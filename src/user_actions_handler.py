@@ -12,11 +12,6 @@ from sort_file import sort
 import pickle
 
 def get_book():
-#    try:
-#        with open(FILE_CONTACT_BOOK, "rb") as fh:
-#            unpacked = pickle.loads(fh.read())
-#            return unpacked
-#    except FileNotFoundError:
     return AddressBook()
 
 
@@ -101,26 +96,17 @@ def handler_add_phone(arg: list):
     '''usage:
         add phone [name] [phone]
     phones should be either 8 or 10 char long'''
-    if len(arg) == 2:
-        name, phone = arg
-    elif len(arg) == 3: 
-        name, surname, phone = arg
-        name = f"{name}, {surname}"
-    else:
-        raise EmptyNamePhoneError
-    if book.get(name.lower(), None):
-        result = book.get(name.lower()).add_phone(phone)
-        return result
-    else:
-        return "Contact does not exist"
+    name, phone = name_splitter(arg)
+    result = book.get(name.lower()).add_phone(phone)
+    return result
 
 
 @input_error
-def handler_search(input):
+def handler_search(arg):
     '''usage:
         search contacts [any str or int]'''
-    if len(input) == 1:
-        input = input[0]
+    if len(arg) == 1:
+        input = arg[0]
         out = "Contacts found:\n"
         results = book.find_all(input)
         for res in results:
@@ -128,50 +114,33 @@ def handler_search(input):
         if len(results) > 0:
             return out
         else:
-            return "Contact list is empty"
+            return "Nothing found"
     else:
-        raise ValueError("Wrong search input")
+        return "Too many words"
+
 
 @input_error
-def handler_find(input: list):
+def handler_find(arg: list):
     '''usage:
         find contact [name]
     or  find contact [first name] [second name]'''
-    if len(input) == 1:
-        input = input[0]
-        return book.find(input.lower())
-    elif len(input) == 2:
-        name, surname = input
-        return book.find(f"{name.lower()}, {surname.lower()}")
-    else:
-        raise ValueError("Wrong find input")    
+    name = name_splitter(arg)
+    return book.find(name.lower())
+
 
 @input_error
 def handler_change_birthday(arg):
     '''usage: 
         change birthday [name] [new birthday in format xx/xx/xxxx]'''
-    if len(arg) == 2:
-        name, birthday = arg
-    elif len(arg) == 3: 
-        name, surname, birthday = arg
-        name = f"{name}, {surname}"
-    if book.get(name.lower(), None):
-        book.get(name.lower(), None).edit_birthday(birthday)
-        return f"Changed birthday of {name} to {birthday}"
-    else:
-        return "Contact does not exist"
-    
+    name, birthday = name_splitter(arg)
+    book.get(name.lower(), None).edit_birthday(birthday)
+    return f"Changed birthday of {name} to {birthday}"
+
+
 def handler_delete_contact(input):
-    if len(input) == 1:
-        name = input[0]
-        book.delete(name.lower())
-        return f"Contact {name} deleted"
-    elif len(input) == 2:
-        name, surname = input
-        book.delete(f"{name.lower()}, {surname.lower()}")
-        return f"Contact {name}, {surname} deleted"
-    else:
-        return "Contact not found"
+    name = name_splitter(input)
+    book.delete(name.lower())
+    return f"Contact {name} deleted"
 
 
 def get_handler(operator):
@@ -193,3 +162,28 @@ OPERATORS = {
     "find contact": handler_find,
     "delete contact": handler_delete_contact
 }
+
+
+def name_splitter(input:list) -> tuple:
+    '''function to check if contact in addressbook, and handle single name / firstname, surname'''
+    if len(input) == 1:
+        name = input[0]
+        if not book.get(name.lower(), None):
+            raise ContactNotFoundError
+        return name
+    elif len(input) == 2:
+        #can be only name, surname OR name, argument
+        name, arg = input
+        long_name = f"{name.lower()}, {arg.lower()}"
+        if book.get(name.lower(), None):
+            return name, arg
+        elif book.get(long_name.lower(), None):
+            return long_name
+        else:
+            raise ContactNotFoundError
+    elif len(input) == 3:
+        firstname, surname, arg = input
+        name = f"{firstname.lower()}, {surname.lower()}"
+        if not book.get(name.lower(), None):
+            raise ContactNotFoundError
+    return name, arg
