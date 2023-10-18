@@ -23,10 +23,15 @@ class AddressBook(UserDict):
             d = self.data.get(name, None)
             out += f"{d}\n"
         return out
+    
+    def save(self):
+        with open(FILE_CONTACT_BOOK, "wb") as fh:
+            pickle.dump(self.data, fh)
 
     def add_record(self, record: set):
         new_user = Record(record)
         self.data.update({new_user.name.value: new_user})
+        self.save()
         return f"Sucsessfully added new contact:\n{new_user}"
 
     def find(self, name: str) -> Record:
