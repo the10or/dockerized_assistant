@@ -3,7 +3,7 @@ from .utils.constants import BOT_COMMANDS
 from . import globals
 from .utils.parser import parser
 import pickle
-from file_config import FILE_CONTACT_BOOK, FILE_NOTES
+from file_config import FILE_NOTES
 
 
 def main():
@@ -11,15 +11,13 @@ def main():
         f"use these commands:\n{BOT_COMMANDS}\n"
     )
     while globals.IS_LISTENING:
-        user_line = input(f"listening...\n")
+        user_line = input(f"::> ")
         if user_line:
             try:
                 command, data = parser(user_line)
                 handler = get_handler(command)
                 result = handler(data)
                 print(result)
-                with open(FILE_CONTACT_BOOK, "wb") as fh:
-                    fh.write(pickle.dumps(book))
                 with open(FILE_NOTES, "wb") as fh:
                     fh.write(pickle.dumps(notes))
                 continue            

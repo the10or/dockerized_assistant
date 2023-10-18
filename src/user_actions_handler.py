@@ -99,6 +99,7 @@ def handler_add_phone(arg: list):
     phones should be either 8 or 10 char long'''
     name, phone = name_splitter(arg)
     result = book.get(name.lower()).add_phone(phone)
+    book.save()
     return result
 
 
@@ -135,12 +136,14 @@ def handler_change_birthday(arg):
         change birthday [name] [new birthday in format xx/xx/xxxx]'''
     name, birthday = name_splitter(arg)
     book.get(name.lower(), None).edit_birthday(birthday)
+    book.save()
     return f"Changed birthday of {name} to {birthday}"
 
 
 def handler_delete_contact(input):
     name = name_splitter(input)
     book.delete(name.lower())
+    book.save()
     return f"Contact {name} deleted"
 
 
