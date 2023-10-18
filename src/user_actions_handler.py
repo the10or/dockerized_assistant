@@ -63,7 +63,7 @@ def handler_sort(dir_path):
 
     
 @input_error
-def add_note_handler(data):
+def handler_add_note(data):
     
      tags = []
      new_data = data
@@ -80,7 +80,8 @@ def add_note_handler(data):
 
     
      if tags:
-         print(tags)
+         
+         
          for i in new_data:
             for j in tags:
                 if j == i:
@@ -92,29 +93,107 @@ def add_note_handler(data):
 
 
      if tags:
+        
         n = note_book.Note(text, tags)
-        note = note_book.NoteBook()
+        
+        globals.note.add_note(n)
 
-        return print(note.add_note(n))
+        print(f'Note has been added successfully:')
+        for i in globals.note.data.values():
+            if type(i) == list:
+                for j in i:
+                    print(str(j))
+            print(str(i))
+
+
+        
+        return '>>>'
      
      else:
         n = note_book.Note(text)
-        note = note_book.NoteBook()
+        
+        globals.note.add_note(n)
 
-        return print(note.add_note(n))
+        print(f'Note has been added successfully:')
+        for i in globals.note.data.values():
+            if type(i) == list:
+                for j in i:
+                    print(str(j))
+            print(str(i))
+        return '>>>'
+
+@input_error
+def handler_add_tag(data):
+    globals.note.add_tag(data[1], data[2])
+    print(f'Tag has been added successfully:')
+    for i in globals.note.data.values():
+        if type(i) == list:
+            print('here')
+            for j in i:
+                print(str(j))
+        print(str(i))
+    return '>>>'
+    
 
 @input_error    
-def edit_note_handler(data):
+def handler_edit_title(data):
+    globals.note.edit_title(data[0], data[1])
+    print(f'Tag has been added successfully:')
+    for i in globals.note.data.values():
+        if type(i) == list:
+            print('here')
+            for j in i:
+                print(str(j))
+        print(str(i))
+    return '>>>'
+  
+
     
-    n = note_book.Note(data[0])
-    return print(n.edit_note(data[1]))
+@input_error    
+def handler_edit_text(data):
+    globals.note.edit_text(data[0], data[1])
+    print(f'Tag has been added successfully:')
+    for i in globals.note.data.values():
+        if type(i) == list:
+            print('here')
+            for j in i:
+                print(str(j))
+        print(str(i))
+    return '>>>'
+    
 
- 
-def sort_note_handler():
-    pass
-
-
+@input_error 
+def handler_sort_note(*args):
+    print('Start sorting')
    
+    return print(globals.note.sort_note())
+
+@input_error
+def handler_find_note(data):
+    lst = []
+   
+    for i in data: 
+        lst.append(globals.note.find_note(i))
+    return '\n'.join(lst)
+
+
+@input_error
+def handler_delete_note(data):
+    for i in data:
+        globals.note.delete_note(i)
+    print(f'Note(s) has been deleted successfully. Remained notes:')
+    for i in globals.note.data.values():
+        if type(i) == list:
+            for j in i:
+                print(str(j))
+
+        print(str(i))
+    return '>>>'
+        
+       
+
+
+
 
 
 
@@ -135,7 +214,12 @@ OPERATORS = {
     "good bye": handler_bye,
     "sort dir": handler_sort,
     "add contact": handler_add_contact,
-    'add note' : add_note_handler,
-    'edit note text': edit_note_handler,
-    'sort note': sort_note_handler
+    'add note' : handler_add_note,
+    'edit note text': handler_edit_text,
+    'edit note title': handler_edit_title,
+    'sort note': handler_sort_note,
+    'find note': handler_find_note,
+    'delete note': handler_delete_note,
+    'add note tag': handler_add_tag
+
 }
