@@ -63,24 +63,58 @@ def handler_sort(dir_path):
 
     
 @input_error
-def add_note_handler(*args):
-     print(args)
+def add_note_handler(data):
+    
      tags = []
-     for i in args:
+     new_data = data
+     for i in data:
          if '#' in i:
+             
              tags.append(i)
              
+             
+     for i in new_data:
+         for j in tags:
+             if j == i:
+                 new_data.remove(i)     
 
     
-     text = ''
+     if tags:
+         print(tags)
+         for i in new_data:
+            for j in tags:
+                if j == i:
+                    new_data.remove(i)
+         text = ' '.join(new_data)
+     else:
+         text = data
 
-     for i in args:
-         if '#' not in i:
-             text += i
 
-     n = note_book.Note(text, tags)
-     book = note_book.NoteBook()
-     return note_book.NoteBook(n)
+
+     if tags:
+        n = note_book.Note(text, tags)
+        note = note_book.NoteBook()
+
+        return print(note.add_note(n))
+     
+     else:
+        n = note_book.Note(text)
+        note = note_book.NoteBook()
+
+        return print(note.add_note(n))
+
+@input_error    
+def edit_note_handler(data):
+    
+    n = note_book.Note(data[0])
+    return print(n.edit_note(data[1]))
+
+ 
+def sort_note_handler():
+    pass
+
+
+   
 
 
 
@@ -101,5 +135,7 @@ OPERATORS = {
     "good bye": handler_bye,
     "sort dir": handler_sort,
     "add contact": handler_add_contact,
-    'add note' : add_note_handler
+    'add note' : add_note_handler,
+    'edit note text': edit_note_handler,
+    'sort note': sort_note_handler
 }
