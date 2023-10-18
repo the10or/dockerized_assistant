@@ -7,6 +7,13 @@ class EmptyPhoneNumberError(Exception):
 class WrongPhoneNumberError(Exception):
     pass
 
+class EmptyNameError(Exception):
+    pass
+
+class EmptyNamePhoneError(Exception):
+    pass
+
+
 def input_error(handler):
     def error_handler(data):
         try:
@@ -15,6 +22,10 @@ def input_error(handler):
             return f"Phone is required"
         except WrongPhoneNumberError:
             return f"Phone length should be 8 or 10 numbers"
+        except EmptyNameError:
+            return f"Enter contact name"
+        except EmptyNamePhoneError:
+            return f"Enter contact name and phone number"
         except KeyError:
             return f'Please, type one of the commands: {BOT_COMMANDS}'
         except FileNotFoundError:

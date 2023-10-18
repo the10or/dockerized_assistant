@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from error_handler import input_error
+from error_handler import *
 from address_book import contact_book
 from address_book.contact_book import AddressBook
 from record import Record
@@ -76,8 +76,10 @@ def handler_add_contact(name):
     or: add contact [name]
 
     names should not include numbers!!'''
-    print(name)
-    return book.add_record(name)
+    if name:
+        return book.add_record(name)
+    else:
+        raise EmptyNameError
 
 
 @input_error
@@ -98,10 +100,19 @@ def handler_show_all(input):
 def handler_add_phone(arg: list):
     '''usage:
         add phone [name] [phone]
-    phones should be either 7 or 10 char long'''
-    name, phone = arg
-    result = book.get(name.lower()).add_phone(phone)
-    return result
+    phones should be either 8 or 10 char long'''
+    if len(arg) == 2:
+        name, phone = arg
+    elif len(arg) == 3: 
+        name, surname, phone = arg
+        name = f"{name}, {surname}"
+    else:
+        raise EmptyNamePhoneError
+    if book.get(name.lower(), None):
+        result = book.get(name.lower()).add_phone(phone)
+        return result
+    else:
+        return "Contact does not exist"
 
 
 @input_error
@@ -139,10 +150,14 @@ def handler_find(input: list):
 def handler_change_birthday(arg):
     '''usage: 
         change birthday [name] [new birthday in format xx/xx/xxxx]'''
-    name, birthday = arg
+    if len(arg) == 2:
+        name, birthday = arg
+    elif len(arg) == 3: 
+        name, surname, birthday = arg
+        name = f"{name}, {surname}"
     if book.get(name.lower(), None):
         book.get(name.lower(), None).edit_birthday(birthday)
-        return f"Changed birthday to {birthday}"
+        return f"Changed birthday of {name} to {birthday}"
     else:
         return "Contact does not exist"
     
