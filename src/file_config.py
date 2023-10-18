@@ -1,2 +1,2 @@
-file_contact_book = 'contact_book.json'
-file_notes = 'notes.json'
+FILE_CONTACT_BOOK = 'contact_book.json'
+FILE_NOTES = 'notes.json'

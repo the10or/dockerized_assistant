@@ -6,18 +6,33 @@ from address_book.contact_book import AddressBook
 from record import Record
 import globals
 from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
-from file_config import file_contact_book, file_notes
-import pickle
+
+from file_config import FILE_CONTACT_BOOK, FILE_NOTES
 from sort_file import sort
+import pickle
 
-try:
-    with open(file_contact_book, "rb") as fh:
-        unpacked = pickle.loads(fh.read())
-        book = unpacked
-except FileNotFoundError:
-    book = AddressBook()
+def get_book():
+#    try:
+#        with open(FILE_CONTACT_BOOK, "rb") as fh:
+#            unpacked = pickle.loads(fh.read())
+#            return unpacked
+#    except FileNotFoundError:
+    return AddressBook()
 
- 
+
+book = get_book()
+
+
+def get_notes():
+    try:
+        with open(FILE_NOTES, "rb") as fh:
+            unpacked = pickle.loads(fh.read())
+            return unpacked
+    except FileNotFoundError:
+        return 'class Notes here'  # TODO: add class Notes
+
+
+notes = get_notes()
 
 
 def handler_greetings(*args):
@@ -25,11 +40,10 @@ def handler_greetings(*args):
 
 
 def handler_bye(*args):
-    globals.is_listening = False
+    globals.IS_LISTENING = False
     return "Good bye!"
 
 
-@input_error
 def handler_sort(dir_path):
     """
     Handler function for sorting a directory.
@@ -54,96 +68,113 @@ def handler_sort(dir_path):
     return "Done!"
 
 
-def handler_add_contact(data):
-    pass
+@input_error
+def handler_add_contact(name):
+    '''usage: 
+
+    add contact [firstname] [surname]
+    or: add contact [name]
+
+    names should not include numbers!!'''
+    print(name)
+    return book.add_record(name)
 
 
 @input_error
+def handler_show_all(input):
+    '''usage:
+        show all'''
+    out = "Contacts found:\n"
+    name = book.find_all("")
+    for n in name:
+        out += f"{n}\n"
+    if len(name) > 0:
+        return out
+    else:
+        return "Contact list is empty"    
+
+
+@input_error
+def handler_add_phone(arg: list):
+    '''usage:
+        add phone [name] [phone]
+    phones should be either 7 or 10 char long'''
+    name, phone = arg
+    result = book.get(name.lower()).add_phone(phone)
+    return result
+
+
+@input_error
+def handler_search(input):
+    '''usage:
+        search contacts [any str or int]'''
+    if len(input) == 1:
+        input = input[0]
+        out = "Contacts found:\n"
+        results = book.find_all(input)
+        for res in results:
+            out += f"{res}\n"
+        if len(results) > 0:
+            return out
+        else:
+            return "Contact list is empty"
+    else:
+        raise ValueError("Wrong search input")
+
+@input_error
+def handler_find(input: list):
+    '''usage:
+        find contact [name]
+    or  find contact [first name] [second name]'''
+    if len(input) == 1:
+        input = input[0]
+        return book.find(input.lower())
+    elif len(input) == 2:
+        name, surname = input
+        return book.find(f"{name.lower()}, {surname.lower()}")
+    else:
+        raise ValueError("Wrong find input")    
+
+@input_error
+def handler_change_birthday(arg):
+    '''usage: 
+        change birthday [name] [new birthday in format xx/xx/xxxx]'''
+    name, birthday = arg
+    if book.get(name.lower(), None):
+        book.get(name.lower(), None).edit_birthday(birthday)
+        return f"Changed birthday to {birthday}"
+    else:
+        return "Contact does not exist"
+    
+def handler_delete_contact(input):
+    if len(input) == 1:
+        name = input[0]
+        book.delete(name.lower())
+        return f"Contact {name} deleted"
+    elif len(input) == 2:
+        name, surname = input
+        book.delete(f"{name.lower()}, {surname.lower()}")
+        return f"Contact {name}, {surname} deleted"
+    else:
+        return "Contact not found"
+
+
 def get_handler(operator):
     return OPERATORS[operator]
 
 
-@input_error
-def handler_show_all_contacts(*args):
-    if not book.data:
-        return "No contacts found"
-    contact_list = "\n".join([str(record) for record in book.data.values()])
-    return contact_list
-
-# Function to add a new contact
-@input_error
-def handler_add_contact(*args):
-    command = " ".join(args)
-    _, *args = command.split(maxsplit=3)
-    if len(args) < 3:
-        return "Give me name, phone, and birthday please"
-    name, phone, birthday = args
-    record = Record(name, phone, birthday)
-    book.add_record(record)
-    
-    return f"Contact {name} added with phone number {phone} and birthday {birthday}"
-
-# Function to change a contact's phone number
-@input_error
-def handler_change_phone(*args):
-    command = " ".join(args)
-    _, name, new_phone = command.split()
-    record = book.find(name)
-    if record:
-        record.edit_phone(record.phones[0].value, new_phone)
-        
-        return f"Phone number for {name} updated to {new_phone}"
-    else:
-        return "Contact not found"
-
-# Function to get a contact's phone number
-@input_error
-def handler_get_phone(*args):
-    command = " ".join(args)
-    _, name = command.split()
-    record = book.find(name)
-    if record:
-        return f"Phone number for {name}: {record.phones[0].value}"
-    else:
-        return "Contact not found"
-
-# Function to get a contact's birthday
-@input_error
-def handler_get_birthday(*args):
-    command = " ".join(args)
-    _, name = command.split()
-    record = book.find(name)
-    if record and record.birthday:
-        return f"Birthday of {name}: {record.birthday.value}"
-    elif record and not record.birthday:
-        return f"{name} does not have a birthday recorded."
-    else:
-        return "Contact not found"
-
-# Function to search for contacts
-def handler_search_contacts(query):
-    results = []
-    for record in book.data.values():
-        if query in record.name.value:
-            results.append(record)
-        for phone in record.phones:
-            if query in phone.value:
-                results.append(record)
-    if results:
-        result_str = "Search results:\n" + "\n".join([str(record) for record in results])
-        return result_str
-    else:
-        return "No matching contacts found."
-
-
 OPERATORS = {
-    'hello': handler_greetings,
-    'close': handler_bye,
-    'exit': handler_bye,
-    'show all': handler_show_all_contacts,
-    'add contact': handler_add_contact,
-    'change phone': handler_change_phone,
-    'get phone': handler_get_phone,
-    'get birthday': handler_get_birthday,
-    'search contact': handler_search_contacts,
+    "hello": handler_greetings,
+    "hi": handler_greetings,
+    "close": handler_bye,
+    "exit": handler_bye,
+    "good bye": handler_bye,
+    "sort dir": handler_sort,
+    "add contact": handler_add_contact,
+    "show all": handler_show_all,
+    "add phone": handler_add_phone,
+    "change birthday": handler_change_birthday,
+    "search contacts": handler_search,
+    "find contact": handler_find,
+    "delete contact": handler_delete_contact
 }
