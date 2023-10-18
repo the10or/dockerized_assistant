@@ -1,7 +1,7 @@
-from user_actions_handler import get_handler, book, notes
-from utils.constants import BOT_COMMANDS
-import globals
-from utils.parser import parser
+from .user_actions_handler import get_handler, book, notes
+from .utils.constants import BOT_COMMANDS
+from . import globals
+from .utils.parser import parser
 import pickle
 from file_config import FILE_CONTACT_BOOK, FILE_NOTES
 
