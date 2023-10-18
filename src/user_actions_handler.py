@@ -3,7 +3,8 @@ from pathlib import Path
 from error_handler import input_error
 from address_book.contact_book import AddressBook
 import globals
-from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
+from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
+    GREETING_MESSAGE, BYE_MESSAGE
 from file_config import FILE_CONTACT_BOOK, FILE_NOTES
 import pickle
 from sort_file import sort
@@ -39,12 +40,13 @@ def handler_show_all_contacts(*args):
 
 
 def handler_greetings(*args):
-    return "How can I help you?"
+    return GREETING_MESSAGE
 
 
 def handler_bye(*args):
     globals.IS_LISTENING = False
-    return "Good bye!"
+
+    return BYE_MESSAGE
 
 
 @input_error
@@ -76,6 +78,10 @@ def handler_add_contact(data):
     pass
 
 
+def handler_help(*args):
+    return "Available commands: \n" + "\n".join(sorted(BOT_COMMANDS))
+
+
 @input_error
 def get_handler(operator):
     return OPERATORS[operator]
@@ -88,5 +94,6 @@ OPERATORS = {
     "exit": handler_bye,
     "good bye": handler_bye,
     "sort dir": handler_sort,
-    "add contact": handler_add_contact
+    "add contact": handler_add_contact,
+    "help": handler_help
 }
