@@ -9,4 +9,4 @@ BOT_COMMANDS = ['hi', 'hello', 'close', 'exit', 'good bye', 'add contact', 'find
                 'remove phone',
                 'remove address', 'remove birthday', 'remove email', 'edit phone', 'edit address', 'edit birthday',
                 'edit email', 'delete contact', 'add note', 'find note', 'edit note title', 'edit note text',
-                'add note tag', 'delete note', 'sort note', 'sort dir', 'show all', 'add phone', 'add birthday', 'search contacts', 'find contact']
+                'add note tag', 'delete note', 'sort note', 'sort dir', 'show all', 'add phone', 'change birthday', 'search contacts', 'find contact']

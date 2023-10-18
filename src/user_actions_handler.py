@@ -53,8 +53,8 @@ def handler_sort(dir_path):
 def handler_add_contact(name):
     '''usage: 
 
-    add [firstname] [surname]
-    or: add [name]
+    add contact [firstname] [surname]
+    or: add contact [name]
 
     names should not include numbers!!'''
     print(name)
@@ -78,7 +78,7 @@ def handler_show_all(input):
 @input_error
 def handler_add_phone(arg: list):
     '''usage:
-        phone [name] [phone]
+        add phone [name] [phone]
     phones should be either 7 or 10 char long'''
     name, phone = arg
     result = book.get(name.lower()).add_phone(phone)
@@ -88,7 +88,7 @@ def handler_add_phone(arg: list):
 @input_error
 def handler_search(input):
     '''usage:
-        search [any str or int]'''
+        search contacts [any str or int]'''
     if len(input) == 1:
         input = input[0]
         out = "Contacts found:\n"
@@ -105,27 +105,40 @@ def handler_search(input):
 @input_error
 def handler_find(input: list):
     '''usage:
-        find [name]
-    or  find [first name] [second name]'''
+        find contact [name]
+    or  find contact [first name] [second name]'''
     if len(input) == 1:
         input = input[0]
         return book.find(input.lower())
     elif len(input) == 2:
-        name, surname = input.lower()
-        return book.find(f"{name}, {surname}")
+        name, surname = input
+        return book.find(f"{name.lower()}, {surname.lower()}")
     else:
         raise ValueError("Wrong find input")    
 
 @input_error
 def handler_change_birthday(arg):
     '''usage: 
-        birthday [name] [new birthday in format xx/xx/xxxx]'''
+        change birthday [name] [new birthday in format xx/xx/xxxx]'''
     name, birthday = arg
     if book.get(name.lower(), None):
         book.get(name.lower(), None).edit_birthday(birthday)
         return f"Changed birthday to {birthday}"
     else:
         return "Contact does not exist"
+    
+def handler_delete_contact(input):
+    if len(input) == 1:
+        name = input[0]
+        book.delete(name.lower())
+        return f"Contact {name} deleted"
+    elif len(input) == 2:
+        name, surname = input
+        book.delete(f"{name.lower()}, {surname.lower()}")
+        return f"Contact {name}, {surname} deleted"
+    else:
+        return "Contact not found"
+
 
 def get_handler(operator):
     return OPERATORS[operator]
@@ -141,7 +154,8 @@ OPERATORS = {
     "add contact": handler_add_contact,
     "show all": handler_show_all,
     "add phone": handler_add_phone,
-    "add birthday": handler_change_birthday,
+    "change birthday": handler_change_birthday,
     "search contacts": handler_search,
-    "find contact": handler_find
+    "find contact": handler_find,
+    "delete contact": handler_delete_contact
 }

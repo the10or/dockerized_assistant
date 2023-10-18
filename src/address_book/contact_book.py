@@ -43,10 +43,11 @@ class AddressBook(UserDict):
                     find_result.append(contact.name)
         return find_result
 
-    def delete(self, record):
-        if record in self.data:
-            del self.data[record]
+    def delete(self, name:str):
+        if self.data.get(name, None):
+            del self.data[name]
         else:
+            print("unsucsessfull")
             return
 
 
