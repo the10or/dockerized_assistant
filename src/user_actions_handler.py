@@ -1,16 +1,11 @@
 from pathlib import Path
 
-
-
-
 from .error_handler import *
-from .address_book import contact_book
 from .address_book.contact_book import AddressBook
-from .record import Record
 from . import globals
 from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
     GREETING_MESSAGE, BYE_MESSAGE
-from .file_config import FILE_CONTACT_BOOK, FILE_NOTES
+from .file_config import FILE_NOTES
 import pickle
 from notes import note_book
 from .sort_file import sort
@@ -29,7 +24,7 @@ def get_notes():
             unpacked = pickle.loads(fh.read())
             return unpacked
     except FileNotFoundError:
-        return 'class Notes here'  # TODO: add class Notes
+        return note_book.NoteBook()
 
 
 notes = get_notes()
@@ -327,7 +322,7 @@ OPERATORS = {
     "good bye": handler_bye,
     "sort dir": handler_sort,
     "add contact": handler_add_contact,
-    'add note' : handler_add_note,
+    'add note': handler_add_note,
     'edit note text': handler_edit_text,
     'edit note title': handler_edit_title,
     'sort note': handler_sort_note,

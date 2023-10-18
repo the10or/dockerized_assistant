@@ -1,5 +1,5 @@
 from collections import UserDict
-import globals
+from ..user_actions_handler import notes
 
 
 class Field:
@@ -94,7 +94,7 @@ class NoteBook(UserDict):
             if text in str(i):
                 self.data.get('No title').remove(i)
                 n = Note(text, tag)
-                globals.note.add_note(n)
+                notes.add_note(n)
                 if not self.data['No title']:
                     self.data.pop('No title')
         return self.data
