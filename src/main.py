@@ -25,10 +25,6 @@ def main():
                 continue            
             except AttributeError:
                 print(f'Please, type one of the commands: {BOT_COMMANDS}')
-            except TypeError:
-                print(f'Please, type one of the commands: {BOT_COMMANDS}')
-            except Exception as error:
-                print(f"Something wrong happens: {error}")
 
 
 if __name__ == "__main__":
