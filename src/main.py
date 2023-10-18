@@ -22,7 +22,7 @@ def main():
                     fh.write(pickle.dumps(book))
                 with open(file_notes, "wb") as fh:
                     fh.write(pickle.dumps(notes))
-                continue
+                continue            
             except AttributeError:
                 print(f'Please, type one of the commands: {BOT_COMMANDS}')
             except TypeError:
