@@ -4,10 +4,11 @@ from .constants import BOT_COMMANDS
 
 
 def parser(line):
-    data = list(filter(None, re.split('|'.join(BOT_COMMANDS), line)))
-    command = difflib.get_close_matches(line, BOT_COMMANDS, n=1, cutoff=0.1)
+    possible_command = ' '.join(line.split(' ')[:2])
+    data = line[len(possible_command) + 1:]
+    command = difflib.get_close_matches(possible_command, BOT_COMMANDS, n=1, cutoff=0.7)
     if not len(command):
         raise AttributeError
-    data = data[0].strip().split(' ') if len(data) > 0 else None
+    data = data.strip().split(' ') if len(data) > 0 else None
 
     return command[0], data
