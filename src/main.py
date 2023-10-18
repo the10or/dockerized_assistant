@@ -21,7 +21,7 @@ def main():
                     fh.write(pickle.dumps(notes))
                 continue
             except AttributeError:
-                print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler('help')()}')
+                print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}')
 
 
 if __name__ == "__main__":
