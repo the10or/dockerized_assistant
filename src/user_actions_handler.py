@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-from .error_handler import input_error
+from .error_handler import *
 from .address_book import contact_book
 from .address_book.contact_book import AddressBook
 from .record import Record
@@ -144,27 +144,6 @@ def handler_delete_contact(input):
     return f"Contact {name} deleted"
 
 
-def get_handler(operator):
-    return OPERATORS[operator]
-
-
-OPERATORS = {
-    "hello": handler_greetings,
-    "hi": handler_greetings,
-    "close": handler_bye,
-    "exit": handler_bye,
-    "good bye": handler_bye,
-    "sort dir": handler_sort,
-    "add contact": handler_add_contact,
-    "show all": handler_show_all,
-    "add phone": handler_add_phone,
-    "change birthday": handler_change_birthday,
-    "search contacts": handler_search,
-    "find contact": handler_find,
-    "delete contact": handler_delete_contact
-}
-
-
 def name_splitter(input:list) -> tuple:
     '''function to check if contact in addressbook, and handle single name / firstname, surname'''
     if len(input) == 1:
@@ -188,3 +167,23 @@ def name_splitter(input:list) -> tuple:
         if not book.get(name.lower(), None):
             raise ContactNotFoundError
     return name, arg
+
+def get_handler(operator):
+    return OPERATORS[operator]
+
+
+OPERATORS = {
+    "hello": handler_greetings,
+    "hi": handler_greetings,
+    "close": handler_bye,
+    "exit": handler_bye,
+    "good bye": handler_bye,
+    "sort dir": handler_sort,
+    "add contact": handler_add_contact,
+    "show all": handler_show_all,
+    "add phone": handler_add_phone,
+    "change birthday": handler_change_birthday,
+    "search contacts": handler_search,
+    "find contact": handler_find,
+    "delete contact": handler_delete_contact
+}
