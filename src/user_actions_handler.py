@@ -1,12 +1,15 @@
 from pathlib import Path
 
 
+
+
 from .error_handler import *
 from .address_book import contact_book
 from .address_book.contact_book import AddressBook
 from .record import Record
 from . import globals
-from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
+from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
+    GREETING_MESSAGE, BYE_MESSAGE
 from .file_config import FILE_CONTACT_BOOK, FILE_NOTES
 import pickle
 from .sort_file import sort
@@ -32,12 +35,13 @@ notes = get_notes()
 
 
 def handler_greetings(*args):
-    return "How can I help you?"
+    return GREETING_MESSAGE
 
 
 def handler_bye(*args):
     globals.IS_LISTENING = False
-    return "Good bye!"
+
+    return BYE_MESSAGE
 
 
 def handler_sort(dir_path):
@@ -76,6 +80,10 @@ def handler_add_contact(name):
         return book.add_record(name)
     else:
         raise EmptyNameError
+
+
+def handler_help(*args):
+    return "Available commands: \n" + "\n".join(sorted(BOT_COMMANDS))
 
 
 @input_error
@@ -183,6 +191,7 @@ OPERATORS = {
     "good bye": handler_bye,
     "sort dir": handler_sort,
     "add contact": handler_add_contact,
+    "help": handler_help,
     "show all": handler_show_all,
     "add phone": handler_add_phone,
     "change birthday": handler_change_birthday,
