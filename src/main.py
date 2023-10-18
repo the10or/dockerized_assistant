@@ -11,7 +11,7 @@ def main():
         f"use these commands:\n{BOT_COMMANDS}\n"
     )
     while globals.IS_LISTENING:
-        user_line = input(f"::>")
+        user_line = input(f"::> ")
         if user_line:
             try:
                 command, data = parser(user_line)
