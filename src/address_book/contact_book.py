@@ -56,8 +56,6 @@ class AddressBook(UserDict):
         output = {}
         for key, value in self.data.items():
             counter += 1
-            # print(key)
-            # print(f"IF {counter} == {len(self.data)}")
             if counter % n or counter == 0 or counter == len(self.data):
                 output.update({key: value})
                 if counter == len(self.data):

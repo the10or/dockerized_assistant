@@ -1,5 +1,5 @@
-import re
 from datetime import datetime
+from error_handler import *
 
 
 class Field:
@@ -75,7 +75,7 @@ class Phone(Field):
         elif len(value) == 8:
             self.value = "80" + value
         else:
-            raise ValueError
+            raise WrongPhoneNumberError
 
     def __str__(self):
         return self.value

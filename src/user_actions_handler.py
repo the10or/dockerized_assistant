@@ -7,7 +7,6 @@ from record import Record
 import globals
 from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
 from file_config import file_contact_book, file_notes
-import pickle
 from sort_file import sort
 
 
