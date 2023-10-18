@@ -6,21 +6,41 @@ from address_book.contact_book import AddressBook
 from record import Record
 import globals
 from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE
-from file_config import file_contact_book, file_notes
+
+from file_config import FILE_CONTACT_BOOK, FILE_NOTES
 from sort_file import sort
+import pickle
+
+def get_book():
+#    try:
+#        with open(FILE_CONTACT_BOOK, "rb") as fh:
+#            unpacked = pickle.loads(fh.read())
+#            return unpacked
+#    except FileNotFoundError:
+    return AddressBook()
 
 
-book = AddressBook()
+book = get_book()
 
-def notes():
-    ...
+
+def get_notes():
+    try:
+        with open(FILE_NOTES, "rb") as fh:
+            unpacked = pickle.loads(fh.read())
+            return unpacked
+    except FileNotFoundError:
+        return 'class Notes here'  # TODO: add class Notes
+
+
+notes = get_notes()
+
 
 def handler_greetings(*args):
     return "How can I help you?"
 
 
 def handler_bye(*args):
-    globals.is_listening = False
+    globals.IS_LISTENING = False
     return "Good bye!"
 
 
