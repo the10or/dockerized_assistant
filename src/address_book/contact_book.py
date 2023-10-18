@@ -1,13 +1,13 @@
 from collections import UserDict
 from record import Record
-from file_config import file_contact_book
+from file_config import FILE_CONTACT_BOOK
 import pickle
 
 
 class AddressBook(UserDict):
     def __init__(self):
         try:
-            with open(file_contact_book, "rb") as f:
+            with open(FILE_CONTACT_BOOK, "rb") as f:
                 fr = f.read()
                 if fr:
                     data = pickle.loads(fr)
