@@ -1,14 +1,14 @@
 from pathlib import Path
-
-from .error_handler import *
-from .address_book.contact_book import AddressBook
-from . import globals
-from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
-    GREETING_MESSAGE, BYE_MESSAGE
-from .file_config import FILE_NOTES
 import pickle
-from notes import note_book
-from .sort_file import sort
+
+from src.error_handler import *
+from src.address_book.contact_book import AddressBook
+from src import globals
+from src.utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
+    GREETING_MESSAGE, BYE_MESSAGE
+from src.file_config import FILE_NOTES
+from src.notes import note_book
+from src.sort_file import sort
 
 
 def get_book():
