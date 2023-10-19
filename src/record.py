@@ -163,6 +163,6 @@ class Note:
     def add_tag(self, tags:list):
         self.tags = NotebookTags(tags)
 
-    def add_note(self, note: list):
+    def edit_note_text(self, note: list):
         text = " ".join(note)
         self.note = NotebookNote(text)
