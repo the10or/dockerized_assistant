@@ -23,6 +23,7 @@ class NoteBook(UserDict):
             d = self.data.get(name, None)
             out += f"{d}\n"
         return out
+
     
     def save(self):
         with open(FILE_NOTES, "wb") as fh:
