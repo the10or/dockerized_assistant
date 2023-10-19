@@ -65,9 +65,12 @@ def handler_add_note(data):
     only one word is accepted as title'''
     if len(data) == 1:
         title = data[0]
-        notes.add_note(data)
-        notes.save()
-        return f"Add note successfully.\n{notes.get(title, None)}"
+        if not notes.get(title, None):
+            notes.add_note(data)
+            notes.save()
+            return f"Add note successfully.\n{notes.get(title, None)}"
+        else:
+            return "This note already exists!"
     else:
         return "Title must be 1 word!"
 
