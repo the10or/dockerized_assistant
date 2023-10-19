@@ -1,31 +1,21 @@
 from pathlib import Path
-
 from .error_handler import *
 from .address_book.contact_book import AddressBook
+from .notes.note_book import NoteBook
 from . import globals
 from .utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
     GREETING_MESSAGE, BYE_MESSAGE
-from .file_config import FILE_NOTES
-import pickle
-from notes import note_book
 from .sort_file import sort
 
 
 def get_book():
     return AddressBook()
 
-
 book = get_book()
 
 
 def get_notes():
-    try:
-        with open(FILE_NOTES, "rb") as fh:
-            unpacked = pickle.loads(fh.read())
-            return unpacked
-    except FileNotFoundError:
-        return note_book.NoteBook()
-
+    return NoteBook()
 
 notes = get_notes()
 
@@ -36,7 +26,8 @@ def handler_greetings(*args):
 
 def handler_bye(*args):
     globals.IS_LISTENING = False
-
+    book.save()
+    notes.save()
     return BYE_MESSAGE
 
 
@@ -64,141 +55,69 @@ def handler_sort(dir_path):
     return "Done!"
 
     
-@input_error
+
+@input_error    
 def handler_add_note(data):
-    
-     tags = []
-     new_data = data
-     for i in data:
-         if '#' in i:
-             
-             tags.append(i)
-             
-             
-     for i in new_data:
-         for j in tags:
-             if j == i:
-                 new_data.remove(i)     
-
-    
-     if tags:
-         
-         
-         for i in new_data:
-            for j in tags:
-                if j == i:
-                    new_data.remove(i)
-         text = ' '.join(new_data)
-     else:
-         text = data
+    notes.add_note(data)
+    notes.save()
+    return f"Added note with Title {notes.data}"
 
 
+@input_error    
+def handler_list_all_notes(*args):
+    return notes.show_all_notes()
 
-     if tags:
-        
-        n = note_book.Note(text, tags)
-        
-        globals.note.add_note(n)
+@input_error
+def handler_delete_note(data):
+    title = " ".join(data)
+    notes.delete_note(title)
+    notes.save()
+    return "Note deleted."
 
-        print(f'Note has been added successfully:')
-        for i in globals.note.data.values():
-            if type(i) == list:
-                for j in i:
-                    print(str(j))
-            print(str(i))
-
-
-        
-        return '>>>'
-     
-     else:
-        n = note_book.Note(text)
-        
-        globals.note.add_note(n)
-
-        print(f'Note has been added successfully:')
-        for i in globals.note.data.values():
-            if type(i) == list:
-                for j in i:
-                    print(str(j))
-            print(str(i))
-        return '>>>'
 
 @input_error
 def handler_add_tag(data):
-    globals.note.add_tag(data[1], data[2])
-    print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
-        if type(i) == list:
-            
-            for j in i:
-                print(str(j))
-        print(str(i))
-    return '>>>'
-    
-
-@input_error    
-def handler_edit_title(data):
-    globals.note.edit_title(data[0], data[1])
-    print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
-        if type(i) == list:
-            
-            for j in i:
-                print(str(j))
-        print(str(i))
-    return '>>>'
-  
+    title = " ".join([item for item in data if not item.startswith("#")])
+    note = notes.get(title.strip(), None)
+    if note:
+        note.add_tag(data)
+        notes.save()
+        return f"Updated note:\n{notes.get(title, None)}"  
+    else:
+        return "Note not found"
 
     
 @input_error    
 def handler_edit_text(data):
-    globals.note.edit_text(data[0], data[1])
-    print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
-        if type(i) == list:
-            print('here')
-            for j in i:
-                print(str(j))
-        print(str(i))
-    return '>>>'
+    title = data[0]
+    text = data[1:]
+    note = notes.get(title, None)
+    if note:
+        note.add_note(text)
+        notes.save()
+        return f"Updated note:\n{notes.get(title, None)}"  
+    else:
+        return "Note not found"
     
 
 @input_error 
 def handler_sort_note(*args):
-    print('Start sorting')
+#     print('Start sorting')
    
     return print(globals.note.sort_note())
 
 @input_error
 def handler_find_note(data):
-    lst = []
-   
-    for i in data: 
-        lst.append(globals.note.find_note(i))
-    return '\n'.join(lst)
+    title = " ".join(data)
+    found_note = notes.find_note(title)
+    if found_note:
+        return f"Found following note:\n{found_note}"
+    else:
+        return "Nothing found..."
 
 
-@input_error
-def handler_delete_note(data):
-    for i in data:
-        globals.note.delete_note(i)
-    print(f'Note(s) has been deleted successfully. Remained notes:')
-    for i in globals.note.data.values():
-        if type(i) == list:
-            for j in i:
-                print(str(j))
-
-        print(str(i))
-    return '>>>'
         
        
-
-
-
-
-
-
 @input_error
 def handler_add_contact(name):
     '''usage: 
@@ -308,6 +227,8 @@ def name_splitter(input:list) -> tuple:
         name = f"{firstname.lower()}, {surname.lower()}"
         if not book.get(name.lower(), None):
             raise ContactNotFoundError
+    else:
+        raise ContactNotFoundError
     return name, arg
 
 def get_handler(operator):
@@ -322,18 +243,20 @@ OPERATORS = {
     "good bye": handler_bye,
     "sort dir": handler_sort,
     "add contact": handler_add_contact,
-    'add note': handler_add_note,
-    'edit notetext': handler_edit_text,
-    'edit notetitle': handler_edit_title,
-    'sort note': handler_sort_note,
-    'find note': handler_find_note,
-    'delete note': handler_delete_note,
-    'add note tag': handler_add_tag,
     "help": handler_help,
     "show all": handler_show_all,
     "add phone": handler_add_phone,
     "change birthday": handler_change_birthday,
     "search contacts": handler_search,
     "find contact": handler_find,
-    "delete contact": handler_delete_contact
+    "delete contact": handler_delete_contact,
+
+    #notes
+    'add note': handler_add_note,
+    'list notes': handler_list_all_notes,
+    'edit notetext': handler_edit_text,
+    'sort note': handler_sort_note,
+    'find note': handler_find_note,
+    'delete note': handler_delete_note,
+    'add tag': handler_add_tag #tag to note, to avoid parser problems
 }
