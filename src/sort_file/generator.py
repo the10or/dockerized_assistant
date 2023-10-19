@@ -1,8 +1,8 @@
 import shutil
-from pathlib import Path
-from random import randint, choice, choices
 import numpy
 from PIL import Image
+from pathlib import Path
+from random import randint, choice, choices
 
 MESSAGE = "Hello, Привіт"
 

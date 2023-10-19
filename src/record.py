@@ -1,5 +1,6 @@
 from datetime import datetime
-from error_handler import *
+
+from src.error_handler import *
 
 
 class Field:

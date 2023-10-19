@@ -1,4 +1,4 @@
-from utils.constants import BOT_COMMANDS
+from src.utils.constants import BOT_COMMANDS
 
 
 class EmptyPhoneNumberError(Exception):
