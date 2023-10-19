@@ -271,8 +271,8 @@ OPERATORS = {
     #notes
     'add note': handler_add_note,
     'list notes': handler_list_all_notes,
-    'edit notetext': handler_edit_text,
+    'edit note_text': handler_edit_text,
     'find note': handler_find_note,
     'delete note': handler_delete_note,
-    'add tag': handler_add_tag #tag to note, to avoid parser problems
+    'add tags': handler_add_tag #tag to note, to avoid parser problems
 }
