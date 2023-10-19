@@ -6,7 +6,7 @@ from src.address_book.contact_book import AddressBook
 from src.notes.note_book import NoteBook
 from src import globals
 from src.utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
-    GREETING_MESSAGE, BYE_MESSAGE
+    GREETING_MESSAGE, BYE_MESSAGE, HELP_INFO
 from src.file_config import FILE_NOTES
 from src.notes import note_book
 from src.sort_file import sort
@@ -146,7 +146,7 @@ def handler_add_contact(name):
 
 
 def handler_help(*args):
-    return "Available commands: \n" + "\n".join(sorted(BOT_COMMANDS))
+    return "Available commands: \n" + HELP_INFO
 
 
 @input_error

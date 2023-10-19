@@ -8,5 +8,6 @@ setup(name='personal_assistant',
       author_email='baskina.development@gmail.com',
       license='MIT',
       packages=find_namespace_packages(),
+      install_requires=['colorama'],
       entry_points={'console_scripts': ['start-bot = src.main:main']},
       )
