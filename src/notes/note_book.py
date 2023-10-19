@@ -1,188 +1,80 @@
 from collections import UserDict
+import pickle
 
-# from src.user_actions_handler import notes
+from src.record import Note
+from src.file_config import FILE_NOTES
 
 
-class Field:
-    def __init__(self, value):
+
+class NoteBook(UserDict):
+    def __init__(self):
+        try:
+            with open(FILE_NOTES, "rb") as f:
+                fr = f.read()
+                if fr:
+                    data = pickle.loads(fr)
+                    self.data = data
+                else:
+                    self.data = {}
+        except FileNotFoundError:
+            self.data = {}
+
+    def __repr__(self) -> str:
+        out = ""
+        for name in self:
+            d = self.data.get(name, None)
+            out += f"{d}\n"
+        return out
+
     
-        self.value = value
+    def save(self):
+        with open(FILE_NOTES, "wb") as fh:
+            pickle.dump(self.data, fh)
+
+    def add_note(self, title: str) -> str:
+        new_note = Note(title)
+        self.data.update({new_note.title.value: new_note})
+        return f"Sucsessfully added new note with title:\n{new_note}"
         
+    def show_all_notes(self):
+        out = []
+        for item in self.data:
+            out.append(item)
+        return "\n".join(sorted(out))
 
-    def __str__(self):
-        return str(self.value)
+    def find_note(self, name: str) -> Note:
+        return self.data.get(name, None)
 
-
-
-class Title(Field):
-    def __init__(self, value):
-        self.value = value 
-
-
-class Text(Field):
-    def __init__(self, value):
-        self.value = value 
- 
-
-        
-
-
-class Note:
-    
-    def __init__(self, note, tags=None):
-        if tags:
-                if type(tags) == str:
-            
-                    self.title = Title(tags[1:])
-                if type(tags) == list:
-            
-                    self.title = Title(tags[0][1:])
+    def delete_note(self, name:str):
+        if self.data.get(name, None):
+            del self.data[name]
         else:
-            self.title = Title('No title')
-       
-        
-        
-        if tags:
-            if type(tags) == list():
-
-                for i in tags:
-                    note = note  + i
-            else:
-                note = note + tags
-        
-       
-        self.note = Text(note)
-     
+            return
 
 
-    def __str__(self):
-        
-       tags = str(self.note).find('#')
-      
-       if self.title.value == 'No title':
-        return f"Title: {self.title.value}, Text: {self.note.value}, Tags: No tags"
-       if tags != -1:
-           return f"Title: {self.title.value}, Text: {self.note.value[:tags]}, Tags: {self.note.value[tags:]}"
-       else:
-           return f"Title: {self.title.value}, Text: {self.note.value}, Tags: No tags"
-                
-        
-           
-           
+    # def find_all(self, input: str) -> list:
+    #     input = input.lower()
+    #     find_result = []
+    #     for contact in self.data.values():
+    #         if input in str(contact.name).lower() and contact.name not in find_result:
+    #             find_result.append(contact.name)
+    #         for single_phone in contact.phones:
+    #             if input in str(single_phone) and contact.name not in find_result:
+    #                 find_result.append(contact.name)
+    #     return find_result
 
 
-class NoteBook(UserDict): 
-    list_n = []
-    def add_note(self,note):
-       
-           
-        if note.title.value  == 'No title':
-                self.list_n.append(note)
-               
-                self.data['No title'] = self.list_n
 
-
-                 
-        else:
-             self.data[note.title.value] = note
-        
-       
-        return self.data
-    def add_tag(self,text, tag):
-        for i in self.data.get('No title'):
-            
-            
-            if text in str(i):
-                self.data.get('No title').remove(i)
-                n = Note(text, tag)
-                notes.add_note(n)
-                if not self.data['No title']:
-                    self.data.pop('No title')
-        return self.data
-                    
-
-   
-    def edit_title(self,tag, new_tag):
-        for k in self.data.keys():
-            if k == tag:
-                value = self.data.get(k)
-                
-        self.data[new_tag] = value
-        self.data.pop(tag)
-        
-        return self.data
-    
-    def edit_text(self,tag, new_text):
-        self.data[tag] = Note(new_text)
-        return self.data
-  
-          
-        
-    def sort_note(self):
-        lst = []
-        self.val = None
-        
-        for k,v in self.data.items():
-            if type(v) == list:
-                self.val = v
-            lst.append(k)
-            
-            
-        
-        
-        new_keys = sorted(lst[0::2])
-        for i in new_keys:
-            print(str((self.data.get(i))))
-        for i in self.val:
-            print(str(i))
-        return 'Successfuly sorted'
-
-    
-    
-
-    def delete_note(self, data):
-        for k,v in self.data.items():
-            if type(v) == list:
-                  
-                for i in v:
-                    
-                    if  data == k:
-                        self.data.pop(k)
-                        return 'deleted'
-                    if  data in str(i) or data == str(i):
-                        
-                    
-                        v.remove(i)
-                if not self.data.get(k):
-                    self.data.pop(k)
-                    return f'deleted {self.data}'
-
-                
-                return self.data
-                        
-
-
-                        
-            if data == k or data == str(v):
-                self.data.pop(k)
-        
-                return self.data
-    
-            
-    def find_note(self,data):
-         for k,v in self.data.items():
-           
-            if type(v) == list:
-                
-                for i in v:
-                    if  data == k:
-                        return f'Found note {(str(i))}'
-                    if data in str(i):
-                        
-                        return f'Found note {(str(i))}'
-                       
-                        
-            
-            if data == k or data in str(v):
-                
-                return f'Found note {(self.data.get(k))}'
+    # def iterator(self, n=5):
+    #     counter = 0
+    #     output = {}
+    #     for key, value in self.data.items():
+    #         counter += 1
+    #         if counter % n or counter == 0 or counter == len(self.data):
+    #             output.update({key: value})
+    #             if counter == len(self.data):
+    #                 yield output
+    #         else:
+    #             output.update({key: value})
+    #             yield output
+    #             output = {}

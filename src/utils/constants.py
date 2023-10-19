@@ -20,7 +20,7 @@ BYE_MESSAGE = "Good bye!"
 
 # functional commands have only two words (according to current parser logic)
 BOT_COMMANDS = ['hi', 'hello', 'close', 'exit', 'good bye', 'add contact', 'find contact',
-                'delete contact', 'add note', 'find note', 'edit note title', 'edit notetext',
-                'add notetag', 'delete note', 'sort note', 'sort dir', "help", "change birthday",
-                "search contacts", "show all", "add phone"]
+                'delete contact', 'add note', 'find note', 'edit notetext',
+                'add tag', 'delete note', 'sort dir', "help", "change birthday",
+                "search contacts", "show all", "add phone", 'list notes']
 

@@ -5,16 +5,7 @@ from src.error_handler import *
 
 class Field:
     def __init__(self, value):
-        self.__value = value
         self.value = value
-
-    @property
-    def value(self):
-        return self.__value
-
-    @value.setter
-    def value(self, value):
-        self.__value = value
 
     def __str__(self):
         return str(self.value)
@@ -39,7 +30,7 @@ class Name(Field):
                 new_user = value
                 self.value = new_user.lower()
         else:
-            raise ValueError("Wrong name input")
+            raise ValueError("Wrong name user_input")
 
     def __str__(self):
         return self.value.title()
@@ -136,3 +127,51 @@ class Record:
         days_to_bd = next_birthday - today_date
 
         return days_to_bd.days
+    
+
+class NotebookTitle(Field):
+    def __init__(self, user_input:str):
+        text = [item for item in user_input if not item.startswith("#")]
+        self.value = " ".join(text)
+
+class NotebookNote(Field):
+    def __init__(self, user_input=""):
+        text = user_input
+        if text:
+            self.value = text
+        else:
+            self.value = ""
+
+
+class NotebookTags(Field):
+    def __init__(self):
+        self.value = []
+
+    def __str__(self):
+        return ", ".join(self.value)
+    
+    def add_tag(self, tag:str):
+        self.value.append(tag)
+    
+    def tags_to_list(self):
+        return self.value
+
+class Note:
+    def __init__(self, user_input):
+        self.title = NotebookTitle(user_input)
+        self.tags = NotebookTags()
+        self.note = NotebookNote()
+    
+    def __str__(self):
+        return f"Title: {self.title}\nContents: {self.note}\nTags: {self.tags}"
+    
+    def add_tag(self, user_input:list):
+        tags = [item for item in user_input if item.startswith("#")]
+        if tags:
+            for tag in tags:
+                if not tag in self.tags.tags_to_list():
+                    self.tags.add_tag(tag)
+
+    def edit_note_text(self, note: list):
+        text = " ".join(note)
+        self.note = NotebookNote(text)
