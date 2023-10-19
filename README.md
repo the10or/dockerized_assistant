@@ -37,28 +37,28 @@ A list of available commands will be displayed.
 
 ---
 
-## Availible commands
+## Available commands
 
-| Command                                                                       | Action                                                                                                                                                     |
-|-------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **hello** / **hi**                                                            | nothing special, just ordinary greeting message                                                                                                            |
-| **help**                                                                          | displays the list of availible commands                                                                                                                    |
-| **add note** [ _text_ ]                                                       | adds a note with the corresponding text                                                                                                                    |
-| **add note tag** [ _text_ ] [ _#tag_ ]                                        | adds a tag to the note with corresponding text                                                                                                             |
-| **edit notetext** [ _text_ ] [ _new text_ ]                                   | edits the text of the note                                                                                                                                 |                 
-| **edit notetitle** [ _#tag_ ] [ _#new tag_ ]                                  | edits the header of the note(the first tag)                                                                                                                |
-| **sort note**                                                                 | sorts notes alphabetically                                                                                                                                 |
-| **find note** [ _text / #tag_ ]                                               | searches for the note by text or tag                                                                                                                       |
-| **delete note** [ _text / #tag_ ]                                             | deletes the note                                                                                                                                           |
- | **sort dir** [ _Path to the folder_ ]                                         | sorts the files in the specified folder and places them in subfolders according to the appropriate content categories                                      |
-| **add contac**t [ _firstname_ ] [ _lastname_ ]                                | adds the contact with corresponding name and lastname  to the address book                                                                                 |
-| **add contact** [ _firstname_ ]                                               | adds the contact to the address book with the name only                                                                                                    |
-| **add phone** [ _name_ ] [ _phone_ ]                                          | adds the contact with name and phone to the address book, the phone number must be 8 or 10 digits long                                                     |
-| **change birthday** [_name_] [_new birthday_ (in format xx/xx/xxxx)]            | changes the birthday date                                                                                                                                  |
-| **search contacts** [ ... ]                                                   | searches for contacts in the address book and displays the resulting list if the search is successful,<br> otherwise displays the "Nothing found" notification |
-| **find contact** [_name_] or  **find contact** [_first name_] [_second name_] | searches for a contact by name or by first and last name                                                                                                   |
-| **delete contact** [__name__]                                                 | deletes the contact by the given name                                                                                                                      |
-| **close** / **exit** / **good bye**                                           | terminates the application                                                                                                                                 |
+| Command                                                                       | Action                                                                                                                                                       |
+|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **hello** / **hi**                                                            | nothing special, just ordinary greeting message                                                                                                              |
+| **help**                                                                      | display the list of availible commands                                                                                                                       |
+| **add note** [ _title_ ]                                                      | add a note with the corresponding title                                                                                                                      |
+| **add tags** [ _title_ ] [ _#tag1_ ] [ _#tag2_ ] ...                          | add tag/tags to the note with corresponding title                                                                                                            |
+| **edit note_text** [ _title_ ] [ _text_ ]                                     | add/edit the text of the note                                                                                                                                |                 
+| **find note** [ _#title_ ]                                                    | find note with corresponding title                                                                                                                           |
+| **delete note** [ _#title_ ]                                                  | delete note with corresponding title                                                                                                                         |
+| **list notes**                                                                | sort(alphabetically ) and show list of notes                                                                                                                 |
+| **sort dir** [ _Path to the folder_ ]                                         | sort the files in the specified folder and places them in subfolders according to the appropriate content categories                                         |
+| **add contact**t [ _firstname_ ] [ _lastname_ ]                               | add the contact with corresponding name and lastname  to the address book                                                                                    |
+| **add contact** [ _firstname_ ]                                               | add the contact to the address book with the name only                                                                                                       |
+| **add phone** [ _name_ ] [ _phone_ ]                                          | add the contact with name and phone to the address book, the phone number must be 8 or 10 digits long                                                        |
+| **show all**                                                                  | show all contact list from address book                                                                                                                      |
+| **change birthday** [_name_] [_new birthday_ (in format xx/xx/xxxx)]          | add/change the birthday date                                                                                                                                 |
+| **search contacts** [ ... ]  ?                                                | search for contacts in the address book and displays the resulting list if the search is successful,<br> otherwise displays the "Nothing found" notification |
+| **find contact** [_name_] or  **find contact** [_first name_] [_second name_] | search for a contact by name or by first and last name                                                                                                       |
+| **delete contact** [__name__]                                                 | delete the contact by the given name                                                                                                                         |
+| **close** / **exit** / **good bye**                                           | terminate the application                                                                                                                                    |
 ___
 ## Authors
 the DRY_KISS.py team
