@@ -143,13 +143,17 @@ class NotebookNote(Field):
 
 
 class NotebookTags(Field):
-    def __init__(self, user_input=[]):
+    def __init__(self):
         self.value = []
-        tags = [item for item in user_input if item.startswith("#")]
-        if tags:
-            for tag in tags:
-                if not tag in self.value:
-                    self.value.append(tag)
+
+    def __str__(self):
+        return ", ".join(self.value)
+    
+    def add_tag(self, tag:str):
+        self.value.append(tag)
+    
+    def tags_to_list(self):
+        return self.value
 
 class Note:
     def __init__(self, user_input):
@@ -160,8 +164,12 @@ class Note:
     def __str__(self):
         return f"Title: {self.title}\nContents: {self.note}\nTags: {self.tags}"
     
-    def add_tag(self, tags:list):
-        self.tags = NotebookTags(tags)
+    def add_tag(self, user_input:list):
+        tags = [item for item in user_input if item.startswith("#")]
+        if tags:
+            for tag in tags:
+                if not tag in self.tags.tags_to_list():
+                    self.tags.add_tag(tag)
 
     def edit_note_text(self, note: list):
         text = " ".join(note)

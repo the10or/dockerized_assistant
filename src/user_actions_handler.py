@@ -62,9 +62,10 @@ def handler_sort(dir_path):
 @input_error    
 def handler_add_note(data):
     if len(data) == 1:
+        title = data[0]
         notes.add_note(data)
         notes.save()
-        return f"Added note with Title {notes.data}"
+        return f"Add note successfully.\n{notes.get(title, None)}"
     else:
         return "Title must be 1 word!"
 
