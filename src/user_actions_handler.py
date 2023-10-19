@@ -1,6 +1,7 @@
 from pathlib import Path
 from error_handler import *
 from address_book.contact_book import AddressBook
+from notes.note_book import NoteBook
 import globals
 from utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
     GREETING_MESSAGE, BYE_MESSAGE
