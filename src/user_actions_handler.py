@@ -61,6 +61,8 @@ def handler_sort(dir_path):
 
 @input_error    
 def handler_add_note(data):
+    '''add note by title
+    only one word is accepted as title'''
     if len(data) == 1:
         title = data[0]
         notes.add_note(data)
@@ -72,10 +74,12 @@ def handler_add_note(data):
 
 @input_error    
 def handler_list_all_notes(*args):
+    '''list of titles from all notes'''
     return notes.show_all_notes()
 
 @input_error
-def handler_delete_note(data):
+def handler_delete_note(data:list):
+    '''delete note by its name'''
     title = " ".join(data)
     notes.delete_note(title)
     notes.save()
@@ -83,7 +87,10 @@ def handler_delete_note(data):
 
 
 @input_error
-def handler_add_tag(data):
+def handler_add_tag(data:list):
+    '''add multiple tags to a note by its name
+    tags should start wit "#"
+    '''
     title = " ".join([item for item in data if not item.startswith("#")])
     note = notes.get(title.strip(), None)
     if note:
@@ -95,7 +102,8 @@ def handler_add_tag(data):
 
     
 @input_error    
-def handler_edit_text(data):
+def handler_edit_text(data:list):
+    '''replaces text in a note by title'''
     title = data[0]
     text = data[1:]
     note = notes.get(title, None)
@@ -105,16 +113,10 @@ def handler_edit_text(data):
         return f"Updated note:\n{notes.get(title, None)}"  
     else:
         return "Note not found"
-    
-
-@input_error 
-def handler_sort_note(*args):
-#     print('Start sorting')
-   
-    return print(globals.note.sort_note())
 
 @input_error
-def handler_find_note(data):
+def handler_find_note(data:list):
+    '''returns all note content by note title'''
     title = " ".join(data)
     found_note = notes.find_note(title)
     if found_note:
@@ -123,8 +125,7 @@ def handler_find_note(data):
         return "Nothing found..."
 
 
-        
-       
+
 @input_error
 def handler_add_contact(name):
     '''usage: 
@@ -248,9 +249,13 @@ OPERATORS = {
     "close": handler_bye,
     "exit": handler_bye,
     "good bye": handler_bye,
-    "sort dir": handler_sort,
-    "add contact": handler_add_contact,
     "help": handler_help,
+
+    #file sorting
+    "sort dir": handler_sort,
+    
+    #contacts
+    "add contact": handler_add_contact,
     "show all": handler_show_all,
     "add phone": handler_add_phone,
     "change birthday": handler_change_birthday,
@@ -262,7 +267,6 @@ OPERATORS = {
     'add note': handler_add_note,
     'list notes': handler_list_all_notes,
     'edit notetext': handler_edit_text,
-    'sort note': handler_sort_note,
     'find note': handler_find_note,
     'delete note': handler_delete_note,
     'add tag': handler_add_tag #tag to note, to avoid parser problems
