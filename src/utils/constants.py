@@ -42,7 +42,7 @@ BOT_COMMANDS = [
     "add note",
     "find note",
     "edit note_text",
-    "add tag",
+    "add tags",
     "delete note",
     "sort dir",
     "help",
