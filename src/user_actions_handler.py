@@ -7,10 +7,7 @@ from src.notes.note_book import NoteBook
 from src import globals
 from src.utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
     GREETING_MESSAGE, BYE_MESSAGE
-from src.file_config import FILE_NOTES
-from src.notes import note_book
 from src.sort_file import sort
-
 
 
 def get_book():
