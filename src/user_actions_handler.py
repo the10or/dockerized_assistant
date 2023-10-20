@@ -7,10 +7,7 @@ from src.notes.note_book import NoteBook
 from src import globals
 from src.utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
     GREETING_MESSAGE, BYE_MESSAGE
-from src.file_config import FILE_NOTES
-from src.notes import note_book
 from src.sort_file import sort
-
 
 
 def get_book():
@@ -179,9 +176,9 @@ def handler_search(arg):
     '''usage:
         search contacts [any str or int]'''
     if len(arg) == 1:
-        input = arg[0]
+        user_input = arg[0]
         out = "Contacts found:\n"
-        results = book.find_all(input)
+        results = book.find_all(user_input)
         for res in results:
             out += f"{res}\n"
         if len(results) > 0:
@@ -211,23 +208,23 @@ def handler_change_birthday(arg):
     return f"Changed birthday of {name} to {birthday}"
 
 
-def handler_delete_contact(input):
-    name = name_splitter(input)
+def handler_delete_contact(user_input):
+    name = name_splitter(user_input)
     book.delete(name.lower())
     book.save()
     return f"Contact {name} deleted"
 
 
-def name_splitter(input:list) -> tuple:
+def name_splitter(user_input:list) -> tuple:
     '''function to check if contact in addressbook, and handle single name / firstname, surname'''
-    if len(input) == 1:
-        name = input[0]
+    if len(user_input) == 1:
+        name = user_input[0]
         if not book.get(name.lower(), None):
             raise ContactNotFoundError
         return name
-    elif len(input) == 2:
+    elif len(user_input) == 2:
         #can be only name, surname OR name, argument
-        name, arg = input
+        name, arg = user_input
         long_name = f"{name.lower()}, {arg.lower()}"
         if book.get(name.lower(), None):
             return name, arg
@@ -235,8 +232,8 @@ def name_splitter(input:list) -> tuple:
             return long_name
         else:
             raise ContactNotFoundError
-    elif len(input) == 3:
-        firstname, surname, arg = input
+    elif len(user_input) == 3:
+        firstname, surname, arg = user_input
         name = f"{firstname.lower()}, {surname.lower()}"
         if not book.get(name.lower(), None):
             raise ContactNotFoundError

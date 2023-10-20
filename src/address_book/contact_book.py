@@ -38,14 +38,14 @@ class AddressBook(UserDict):
     def find(self, name: str) -> Record:
         return self.data.get(name, None)
 
-    def find_all(self, input: str) -> list:
-        input = input.lower()
+    def find_all(self, user_input: str) -> list:
+        user_input = user_input.lower()
         find_result = []
         for contact in self.data.values():
-            if input in str(contact.name).lower() and contact.name not in find_result:
+            if user_input in str(contact.name).lower() and contact.name not in find_result:
                 find_result.append(contact.name)
             for single_phone in contact.phones:
-                if input in str(single_phone) and contact.name not in find_result:
+                if user_input in str(single_phone) and contact.name not in find_result:
                     find_result.append(contact.name)
         return find_result
 

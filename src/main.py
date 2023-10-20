@@ -1,5 +1,5 @@
-from src.user_actions_handler import get_handler, book, notes
-from src.utils.constants import INVITE_MESSAGE, TYPE_OR_ATTRIBUTE_ERROR_MESSAGE, UNDEFINED_ERROR_MESSAGE
+from src.user_actions_handler import get_handler
+from src.utils.constants import INVITE_MESSAGE, TYPE_OR_ATTRIBUTE_ERROR_MESSAGE
 from src import globals
 from src.utils.parser import parser
 
