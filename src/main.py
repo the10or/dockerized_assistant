@@ -4,11 +4,10 @@ from src import globals
 from src.utils.parser import parser
 
 
-
 def main():
     while globals.IS_LISTENING:
         user_line = input(INVITE_MESSAGE)
-        
+
         if user_line:
             try:
                 command, data = parser(user_line)
