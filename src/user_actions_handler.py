@@ -5,8 +5,15 @@ from src.error_handler import *
 from src.address_book.contact_book import AddressBook
 from src.notes.note_book import NoteBook
 from src import globals
-from src.utils.constants import WARNING_MESSAGE, ABORTING_OPERATION_MESSAGE, SORTING_PROGRESS_MESSAGE, BOT_COMMANDS, \
-    GREETING_MESSAGE, BYE_MESSAGE, HELP_INFO
+from src.utils.constants import (
+    WARNING_MESSAGE,
+    ABORTING_OPERATION_MESSAGE,
+    SORTING_PROGRESS_MESSAGE,
+    BOT_COMMANDS,
+    GREETING_MESSAGE,
+    BYE_MESSAGE,
+    HELP_INFO,
+)
 from src.file_config import FILE_NOTES
 from src.notes import note_book
 from src.sort_file import sort
@@ -15,11 +22,13 @@ from src.sort_file import sort
 def get_book():
     return AddressBook()
 
+
 book = get_book()
 
 
 def get_notes():
     return NoteBook()
+
 
 notes = get_notes()
 
@@ -35,6 +44,7 @@ def handler_bye(*args):
     return BYE_MESSAGE
 
 
+@input_error
 def handler_sort(dir_path):
     """
     Handler function for sorting a directory.
@@ -58,12 +68,11 @@ def handler_sort(dir_path):
 
     return "Done!"
 
-    
 
-@input_error    
+@input_error
 def handler_add_note(data):
-    '''add note by title
-    only one word is accepted as title'''
+    """add note by title
+    only one word is accepted as title"""
     if len(data) == 1:
         title = data[0]
         if not notes.get(title, None):
@@ -76,14 +85,15 @@ def handler_add_note(data):
         return "Title must be 1 word!"
 
 
-@input_error    
+@input_error
 def handler_list_all_notes(*args):
-    '''list of titles from all notes'''
+    """list of titles from all notes"""
     return notes.show_all_notes()
 
+
 @input_error
-def handler_delete_note(data:list):
-    '''delete note by its name'''
+def handler_delete_note(data: list):
+    """delete note by its name"""
     title = " ".join(data)
     notes.delete_note(title)
     notes.save()
@@ -91,36 +101,37 @@ def handler_delete_note(data:list):
 
 
 @input_error
-def handler_add_tag(data:list):
-    '''add multiple tags to a note by its name
+def handler_add_tag(data: list):
+    """add multiple tags to a note by its name
     tags should start wit "#"
-    '''
+    """
     title = " ".join([item for item in data if not item.startswith("#")])
     note = notes.get(title.strip(), None)
     if note:
         note.add_tag(data)
         notes.save()
-        return f"Updated note:\n{notes.get(title, None)}"  
+        return f"Updated note:\n{notes.get(title, None)}"
     else:
         return "Note not found"
 
-    
-@input_error    
-def handler_edit_text(data:list):
-    '''replaces text in a note by title'''
+
+@input_error
+def handler_edit_text(data: list):
+    """replaces text in a note by title"""
     title = data[0]
     text = data[1:]
     note = notes.get(title, None)
     if note:
         note.edit_note_text(text)
         notes.save()
-        return f"Updated note:\n{notes.get(title, None)}"  
+        return f"Updated note:\n{notes.get(title, None)}"
     else:
         return "Note not found"
 
+
 @input_error
-def handler_find_note(data:list):
-    '''returns all note content by note title'''
+def handler_find_note(data: list):
+    """returns all note content by note title"""
     title = " ".join(data)
     found_note = notes.find_note(title)
     if found_note:
@@ -129,15 +140,14 @@ def handler_find_note(data:list):
         return "Nothing found..."
 
 
-
 @input_error
 def handler_add_contact(name):
-    '''usage: 
+    """usage:
 
     add contact [firstname] [surname]
     or: add contact [name]
 
-    names should not include numbers!!'''
+    names should not include numbers!!"""
     if name:
         return book.add_record(name)
     else:
@@ -150,8 +160,8 @@ def handler_help(*args):
 
 @input_error
 def handler_show_all(input):
-    '''usage:
-        show all'''
+    """usage:
+    show all"""
     out = "Contacts found:\n"
     name = book.find_all("")
     for n in name:
@@ -159,14 +169,14 @@ def handler_show_all(input):
     if len(name) > 0:
         return out
     else:
-        return "Contact list is empty"    
+        return "Contact list is empty"
 
 
 @input_error
 def handler_add_phone(arg: list):
-    '''usage:
+    """usage:
         add phone [name] [phone]
-    phones should be either 8 or 10 char long'''
+    phones should be either 8 or 10 char long"""
     name, phone = name_splitter(arg)
     result = book.get(name.lower()).add_phone(phone)
     book.save()
@@ -175,8 +185,8 @@ def handler_add_phone(arg: list):
 
 @input_error
 def handler_search(arg):
-    '''usage:
-        search contacts [any str or int]'''
+    """usage:
+    search contacts [any str or int]"""
     if len(arg) == 1:
         user_input = arg[0]
         out = "Contacts found:\n"
@@ -193,17 +203,17 @@ def handler_search(arg):
 
 @input_error
 def handler_find(arg: list):
-    '''usage:
+    """usage:
         find contact [name]
-    or  find contact [first name] [second name]'''
+    or  find contact [first name] [second name]"""
     name = name_splitter(arg)
     return book.find(name.lower())
 
 
 @input_error
 def handler_change_birthday(arg):
-    '''usage: 
-        change birthday [name] [new birthday in format xx/xx/xxxx]'''
+    """usage:
+    change birthday [name] [new birthday in format xx/xx/xxxx]"""
     name, birthday = name_splitter(arg)
     book.get(name.lower(), None).edit_birthday(birthday)
     book.save()
@@ -217,15 +227,15 @@ def handler_delete_contact(user_input):
     return f"Contact {name} deleted"
 
 
-def name_splitter(user_input:list) -> tuple:
-    '''function to check if contact in addressbook, and handle single name / firstname, surname'''
+def name_splitter(user_input: list) -> tuple:
+    """function to check if contact in addressbook, and handle single name / firstname, surname"""
     if len(user_input) == 1:
         name = user_input[0]
         if not book.get(name.lower(), None):
             raise ContactNotFoundError
         return name
     elif len(user_input) == 2:
-        #can be only name, surname OR name, argument
+        # can be only name, surname OR name, argument
         name, arg = user_input
         long_name = f"{name.lower()}, {arg.lower()}"
         if book.get(name.lower(), None):
@@ -243,6 +253,7 @@ def name_splitter(user_input:list) -> tuple:
         raise ContactNotFoundError
     return name, arg
 
+
 def get_handler(operator):
     return OPERATORS[operator]
 
@@ -254,11 +265,9 @@ OPERATORS = {
     "exit": handler_bye,
     "good bye": handler_bye,
     "help": handler_help,
-
-    #file sorting
+    # file sorting
     "sort dir": handler_sort,
-    
-    #contacts
+    # contacts
     "add contact": handler_add_contact,
     "show all": handler_show_all,
     "add phone": handler_add_phone,
@@ -266,12 +275,11 @@ OPERATORS = {
     "search contacts": handler_search,
     "find contact": handler_find,
     "delete contact": handler_delete_contact,
-
-    #notes
-    'add note': handler_add_note,
-    'list notes': handler_list_all_notes,
-    'edit note_text': handler_edit_text,
-    'find note': handler_find_note,
-    'delete note': handler_delete_note,
-    'add tags': handler_add_tag #tag to note, to avoid parser problems
+    # notes
+    "add note": handler_add_note,
+    "list notes": handler_list_all_notes,
+    "edit note_text": handler_edit_text,
+    "find note": handler_find_note,
+    "delete note": handler_delete_note,
+    "add tags": handler_add_tag,  # tag to note, to avoid parser problems
 }

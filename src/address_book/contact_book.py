@@ -24,7 +24,7 @@ class AddressBook(UserDict):
             d = self.data.get(name, None)
             out += f"{d}\n"
         return out
-    
+
     def save(self):
         with open(FILE_CONTACT_BOOK, "wb") as fh:
             pickle.dump(self.data, fh)
@@ -42,20 +42,22 @@ class AddressBook(UserDict):
         user_input = user_input.lower()
         find_result = []
         for contact in self.data.values():
-            if user_input in str(contact.name).lower() and contact.name not in find_result:
+            if (
+                    user_input in str(contact.name).lower()
+                    and contact.name not in find_result
+            ):
                 find_result.append(contact.name)
             for single_phone in contact.phones:
                 if user_input in str(single_phone) and contact.name not in find_result:
                     find_result.append(contact.name)
         return find_result
 
-    def delete(self, name:str):
+    def delete(self, name: str):
         if self.data.get(name, None):
             del self.data[name]
         else:
             print("unsucsessfull")
             return
-
 
     def iterator(self, n=5):
         counter = 0
