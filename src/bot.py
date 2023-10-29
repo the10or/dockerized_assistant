@@ -25,7 +25,7 @@ class CLIBot(AbstractBot):
                     command, data = parser(user_line)
                     handler = get_handler(command)
                     result = handler(data)
-                    self.user_interface.output(result)
+                    self.user_interface.yield_output(result)
                     continue
                 except AttributeError:
                     print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}')
@@ -37,7 +37,7 @@ class AbstractUserInterface(ABC):
         ...
 
     @abstractmethod
-    def output(self, output):
+    def yield_output(self, output):
         ...
 
 
@@ -46,5 +46,5 @@ class CLIUserInterface(AbstractUserInterface):
     def get_input(self):
         return input(INVITE_MESSAGE)
 
-    def output(self, output):
+    def yield_output(self, output):
         print(output)
