@@ -13,17 +13,38 @@ class AbstractBot(ABC):
 
 
 class CLIBot(AbstractBot):
+    def __init__(self):
+        self.user_interface = CLIUserInterface()
 
     def run(self):
         while globals.IS_LISTENING:
-            user_line = input(INVITE_MESSAGE)
+            user_line = self.user_interface.get_input()
 
             if user_line:
                 try:
                     command, data = parser(user_line)
                     handler = get_handler(command)
                     result = handler(data)
-                    print(result)
+                    self.user_interface.output(result)
                     continue
                 except AttributeError:
                     print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}')
+
+
+class AbstractUserInterface(ABC):
+    @abstractmethod
+    def get_input(self):
+        ...
+
+    @abstractmethod
+    def output(self, output):
+        ...
+
+
+class CLIUserInterface(AbstractUserInterface):
+
+    def get_input(self):
+        return input(INVITE_MESSAGE)
+
+    def output(self, output):
+        print(output)
