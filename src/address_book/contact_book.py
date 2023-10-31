@@ -1,8 +1,8 @@
 import pickle
 from collections import UserDict
 
-from src.file_config import FILE_CONTACT_BOOK
-from src.record import Record
+from file_config import FILE_CONTACT_BOOK
+from record import Record
 
 
 class AddressBook(UserDict):

@@ -1,8 +1,8 @@
 import shutil
 from pathlib import Path
 
-from src.sort_file.normalize import normalize
-from src.sort_file.scan import categories, scan
+from .normalize import normalize
+from .scan import categories, scan
 
 
 def main(path):

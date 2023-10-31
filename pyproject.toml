@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "personal-assistant"
+version = "0.1.0"
+description = ""
+authors = ["the10or <the10or@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+colorama = "^0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

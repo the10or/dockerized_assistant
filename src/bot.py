@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 
 import globals
-from src.user_actions_handler import get_handler
-from src.utils.constants import (
+from user_actions_handler import get_handler
+from utils.constants import (
     BYE_MESSAGE,
     INVITE_MESSAGE,
     TYPE_OR_ATTRIBUTE_ERROR_MESSAGE,
 )
-from src.utils.parser import parser
+from utils.parser import parser
 
 
 class AbstractBot(ABC):

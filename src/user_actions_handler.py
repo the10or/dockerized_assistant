@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from src.address_book.contact_book import AddressBook
-from src.error_handler import *
-from src.notes.note_book import NoteBook
-from src.sort_file import sort
-from src.utils.constants import (
+from address_book.contact_book import AddressBook
+from error_handler import *
+from notes.note_book import NoteBook
+from sort_file import sort
+from utils.constants import (
     ABORTING_OPERATION_MESSAGE,
     BYE_MESSAGE,
     GREETING_MESSAGE,
