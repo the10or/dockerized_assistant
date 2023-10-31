@@ -5,7 +5,7 @@ setup(
     version="1",
     description="Program includes features: address book; notes; sorting files",
     url="https://github.com/the10or/personal_assistant",
-    author="Group",
+    author="DRY_KISS.py team",
     author_email="the10or@gmail.com",
     license="MIT",
     packages=find_namespace_packages(),

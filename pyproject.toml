@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "personal-assistant"
 version = "0.1.0"
-description = ""
+description = "includes features: address book; notes; sorting files"
 authors = ["the10or <the10or@gmail.com>"]
 license = "MIT"
 readme = "README.md"
