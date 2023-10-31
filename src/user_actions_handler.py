@@ -1,17 +1,16 @@
 from pathlib import Path
 
-from src import globals
 from src.address_book.contact_book import AddressBook
 from src.error_handler import *
 from src.notes.note_book import NoteBook
 from src.sort_file import sort
 from src.utils.constants import (
-    WARNING_MESSAGE,
     ABORTING_OPERATION_MESSAGE,
-    SORTING_PROGRESS_MESSAGE,
-    GREETING_MESSAGE,
     BYE_MESSAGE,
+    GREETING_MESSAGE,
     HELP_INFO,
+    SORTING_PROGRESS_MESSAGE,
+    WARNING_MESSAGE,
 )
 
 
@@ -34,7 +33,6 @@ def handler_greetings(*args):
 
 
 def handler_bye(*args):
-    globals.IS_LISTENING = False
     book.save()
     notes.save()
     return BYE_MESSAGE

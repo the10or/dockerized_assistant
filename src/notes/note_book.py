@@ -1,8 +1,8 @@
-from collections import UserDict
 import pickle
+from collections import UserDict
 
-from src.record import Note
 from src.file_config import FILE_NOTES
+from src.record import Note
 
 
 class NoteBook(UserDict):

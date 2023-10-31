@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
 
-from src.user_actions_handler import get_handler
-from src.utils.constants import INVITE_MESSAGE, TYPE_OR_ATTRIBUTE_ERROR_MESSAGE
-from src.utils.parser import parser
 import globals
+from src.user_actions_handler import get_handler
+from src.utils.constants import (
+    BYE_MESSAGE,
+    INVITE_MESSAGE,
+    TYPE_OR_ATTRIBUTE_ERROR_MESSAGE,
+)
+from src.utils.parser import parser
 
 
 class AbstractBot(ABC):
@@ -25,10 +29,17 @@ class CLIBot(AbstractBot):
                     command, data = parser(user_line)
                     handler = get_handler(command)
                     result = handler(data)
+
                     self.user_interface.yield_output(result)
+                    if result == BYE_MESSAGE:
+                        globals.IS_LISTENING = False
+
+
                     continue
                 except AttributeError:
-                    print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}')
+                    print(
+                        f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}'
+                    )
 
 
 class AbstractUserInterface(ABC):
@@ -42,7 +53,6 @@ class AbstractUserInterface(ABC):
 
 
 class CLIUserInterface(AbstractUserInterface):
-
     def get_input(self):
         return input(INVITE_MESSAGE)
 
