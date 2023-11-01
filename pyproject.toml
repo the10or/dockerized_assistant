@@ -5,12 +5,15 @@ description = "includes features: address book; notes; sorting files"
 authors = ["the10or <the10or@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
 colorama = "^0.4.6"
+setuptools = "^68.2.2"
 
-
+[tool.poetry.scripts]
+start-bot = "main:CLIBot().run"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
